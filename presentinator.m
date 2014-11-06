@@ -3,11 +3,16 @@ clear all
 close all
 oldEnableFlag = Screen('Preference', 'SuppressAllWarnings', 1);
 %% Initializationtion Routines
+  %---------- Set Paths ----------%
+%  addpath('');
+%Pin     2   3   4   5   6   7   8   9
+%Bit     D0  D1  D2  D3  D4  D5  D6  D7
+%Value   1   2   4   8   16  32  64  128
 
+  
 	%---------- Communications ----------%
   %TTL_protocol = 'serial';
  TTL_protocol = 'parallel';
-%TTL_protocol='';
   
 	[status, Myipaddr] = system('ifconfig');
 	IPAddress = '10.86.1.87';  
