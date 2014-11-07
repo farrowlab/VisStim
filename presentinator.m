@@ -112,7 +112,7 @@ while main_loop_run
     
     case 'Moving Bar'      
       StimLog = ShowMovingBar(window,vparams,sparams); 
-      save '/media/nerffs01/Data/StimLog/StimLog' StimLog;
+%      save '/media/nerffs01/Data/StimLog/StimLog' StimLog;
       
     case 'Flashing Bar'
       StimLog = ShowFlashingBar(window,vparams,sparams); 

@@ -23,7 +23,7 @@ elseif isfield(sparams,'serialport')
   TTLfunction = @(x)serialTTLoutput(sparams.serialport,x);
   startbit = 0;
   stopbit = 0;
-  pulsebit = 0;
+  framebit = 0;
 else
   TTLfunction = @(x)0;
 endif % TTLpulse initialization
@@ -86,6 +86,7 @@ for a = 1:nangles
   
     %----- Log Stimulus -----%
     TTLfunction(stimbit,recbit);
+    TTLfunction(framebit,recbit);
     StimLog.Stim(i).StartSweep = GetSecs - StimLog.BeginTime; % Start of sweep
     %for j = 1:5; srl_write(sparams.serialport,'0'); end
                              
@@ -156,7 +157,7 @@ for a = 1:nangles
       TTLfunction(stimbit,recbit);
       TTLfunction(framebit,recbit);
       StimLog.Stim(i).TimeON = GetSecs - StimLog.BeginTime;  % TimeON    
-      for j = 1:5; srl_write(sparams.serialport,'0'); end
+%      for j = 1:5; srl_write(sparams.serialport,'0'); end
 	    WaitSecs(vparams.PreTime); 
   
     
@@ -174,7 +175,13 @@ for a = 1:nangles
         
       % Flip to the screen
       vbl  = Screen('Flip', window, vbl + 0.5 * ifi); %(waitframes - 0.5)
-    
+      
+      if (n == 1) || (n == FrameNum)        
+          TTLfunction(stimbit,recbit);
+      else
+          TTLfunction(framebit,recbit);
+      end
+        
     end
     
     
@@ -183,6 +190,13 @@ for a = 1:nangles
     while n <= FrameNum
       n = n + 1;
       Screen('glTranslate', window, -SpeedPixPerFrames, 0);
+      
+      if (n == 1) || (n == FrameNum)        
+          TTLfunction(stimbit,recbit);
+      else
+          TTLfunction(framebit,recbit);
+      end
+            
     end
     Screen('glTranslate', window, posX, posY) % translate image (but need to fillrect again) positive values go oppostie direction
     Screen('glRotate', window, AngleBar, 0, 0); % negative rotation
@@ -193,19 +207,20 @@ for a = 1:nangles
  end
  end 
     %----- Stop Bar -----%       % need review
+    TTLfunction(stimbit,recbit);
     StimLog.Stim(i).TimeOFF = GetSecs - StimLog.BeginTime; % TimeOFF
-    for j = 1:5; srl_write(sparams.serialport,'0'); end
+    %for j = 1:5; srl_write(sparams.serialport,'0'); end
       
     Screen('FillRect', window, vparams.BgColour)
     vbl = Screen('Flip', window, vbl + 0.5 * ifi);
-    TTLfunction(stimbit,recbit);
+    
     StimLog.Stim(i).EndSweep = GetSecs - StimLog.BeginTime; % EndSweep
-	  for j = 1:5; srl_write(sparams.serialport,'0'); end
+%	  for j = 1:5; srl_write(sparams.serialport,'0'); end
   
     %----- Post Stimulus Pause -----%
     WaitSecs(vparams.PostTime); 
     StimLog.EndTime = GetSecs - StimLog.BeginTime;
     TTLfunction(stopbit,0);
-    for j = 1:5; srl_write(sparams.serialport,'0'); end
+%    for j = 1:5; srl_write(sparams.serialport,'0'); end
 
 end
