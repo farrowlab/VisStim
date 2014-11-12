@@ -1,9 +1,8 @@
 function StimLog = ShowMovingBar(window,vparams,sparams);
 % difference post stim and inter stim
 
-%-------------- Initiate -------------%
-nangles = length(vparams.Angle);
 
+%-------------- Initiate TTLpulse---------------%
 if isfield(sparams,'paralellport')
   fprintf(1,"Using the parallel Port.\n")
   TTLfunction = @(x,y)parallelTTLoutput(sparams.paralellport,x,y);
@@ -27,6 +26,11 @@ elseif isfield(sparams,'serialport')
 else
   TTLfunction = @(x)0;
 endif % TTLpulse initialization
+
+
+
+%-------------- Initiate Parameters-------------%
+nangles = length(vparams.Angle);
 
 
   %----- Make Parameter List -----%
@@ -63,20 +67,23 @@ endif % TTLpulse initialization
     StimLog.Stim(i).BgColor = vparams.BgColour; % BgColour
   end
   
+  
+  % ----- Display Blank screen for BlankTime-----%
+  %TIME = GetSecs;
+  parallelTTLstartstop(sparams.paralellport,recbit);
+  TTLfunction(startbit,recbit);
+  StimLog.BlankTime = GetSecs;
+  WaitSecs(vparams.BlankTime)
+  %WaitSecs(TIME + vparams.BlankTime - GetSecs);
+  %TIME = TIME + vparams.BlankTime;
+  
+  
   %----- Initiate Screen -----%
   Screen('FillRect', window, vparams.BgColour)
   ifi = Screen('GetFlipInterval', window);
   vbl = Screen('Flip', window);		
   
 
-% ----- Display Blank screen for BlankTime-----%
-%TIME = GetSecs;
-parallelTTLstartstop(sparams.paralellport,recbit);
-TTLfunction(startbit,recbit);
-StimLog.BlankTime = GetSecs;
-WaitSecs(vparams.BlankTime)
-%WaitSecs(TIME + vparams.BlankTime - GetSecs);
-%TIME = TIME + vparams.BlankTime;
 
   
 %---------- Present ----------%
@@ -178,6 +185,7 @@ for a = 1:nangles
       
       if (n == 1) || (n == FrameNum)        
           TTLfunction(stimbit,recbit);
+          TTLfunction(framebit,recbit);
       else
           TTLfunction(framebit,recbit);
       end
@@ -213,13 +221,15 @@ for a = 1:nangles
       
     Screen('FillRect', window, vparams.BgColour)
     vbl = Screen('Flip', window, vbl + 0.5 * ifi);
-    
+    TTLfunction(stimbit,recbit);
     StimLog.Stim(i).EndSweep = GetSecs - StimLog.BeginTime; % EndSweep
 %	  for j = 1:5; srl_write(sparams.serialport,'0'); end
   
     %----- Post Stimulus Pause -----%
     WaitSecs(vparams.PostTime); 
+    TTLfunction(stimbit,recbit);
     StimLog.EndTime = GetSecs - StimLog.BeginTime;
+    WaitSecs(vparams.BlankTime);
     TTLfunction(stopbit,0);
 %    for j = 1:5; srl_write(sparams.serialport,'0'); end
 
