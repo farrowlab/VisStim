@@ -144,7 +144,7 @@ for a = 1:nangles
       % have a look at the texture tutorials
       %Screen('FillRect', window, vparams.StimColor, CenterRectOnPoint(baseRect, posX, posY));
       %vbl = Screen('Flip', window, vbl + 0.5 * ifi);
-      Screen('FillRect', window, StimList(i,2) , CenterRectOnPoint(baseRect, posX, posY));
+      %Screen('FillRect', window, StimList(i,2) , CenterRectOnPoint(baseRect, posX, posY));
       Screen('glTranslate', window, posX, posY) % translate image (but need to fillrect again) positive values go oppostie direction
       Screen('glRotate', window, -AngleBar, 0, 0); % negative rotation
       Screen('glTranslate', window, -posX, -posY)

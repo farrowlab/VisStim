@@ -387,6 +387,12 @@ function [VStim P] = ParseUDPVStim(udp);
             S = regexp(udp, ';Repeats:','end')+1;
             E = sc(find(sc > S,1,'first'))-1;            
             P.Repeats = str2num(udp(S:E));   
+          case 'BlankTime'
+            % Time to blank display blank stimuli before (and after) stimulus presentation
+            % This is independent of PreTime.
+            S = regexp(udp, ';BlankTime:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.BlankTime = str2num(udp(S:E));  
           case 'PreTime'
             S = regexp(udp, ';PreTime:','end')+1;
             E = sc(find(sc > S,1,'first'))-1;            
