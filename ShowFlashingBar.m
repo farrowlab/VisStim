@@ -1,5 +1,30 @@
 function StimLog = ShowFlashingBar(window,vparams,sparams);
 
+%-------------- Initiate TTLpulse---------------%
+if isfield(sparams,'paralellport')
+  fprintf(1,"Using the parallel Port.\n")
+  TTLfunction = @(x,y)parallelTTLoutput(sparams.paralellport,x,y);
+
+  recbit = 1;      % pin 2; duration of recording; trigger to start and stop ThorLab image recording
+  stimbit = 2;     % pin 3; timestamp for the stimulus
+  framebit = 4;    % pin 4; timestamp for the frame
+  startbit = 8;    % pin 5; trigger to start lcg recording
+  stopbit = 16;    % pin 6; trigger to stop lcg recording
+  
+ %Pin    2   3   4   5   6   7   8   9
+%Value   1   2   4   8   16  32  64  128
+%For example if you want to set pins 2 and 3 to logic 1 (led on) then you have to output value 1+2=3, or 3,5 and 6 then you need to output value 2+8+16=26
+
+pp_data(sparams.paralellport,0);
+elseif isfield(sparams,'serialport')
+  TTLfunction = @(x)serialTTLoutput(sparams.serialport,x);
+  startbit = 0;
+  stopbit = 0;
+  framebit = 0;
+else
+  TTLfunction = @(x)0;
+endif % TTLpulse initialization
+
 
 %----- Make Parameter List -----%
   [p, q] = meshgrid(vparams.Size,vparams.StimColor);
@@ -20,7 +45,7 @@ function StimLog = ShowFlashingBar(window,vparams,sparams);
 %----- Log Stimulus ------%
   StimLog.StimulusClass = 'Moving Bar';
   StimLog.BeginTime = GetSecs;  
-  for j = 1:5; srl_write(sparams.serialport,'0'); end 
+  %for j = 1:5; srl_write(sparams.serialport,'0'); end 
   for i = 1:size(StimList,1)
     %StimLog.Stim(i).Stimulus = vparams.Shape; 
     StimLog.Stim(i).Size = StimList(i,1); % Size
@@ -32,7 +57,14 @@ function StimLog = ShowFlashingBar(window,vparams,sparams);
 %-------------- Initiate -------------%
 nangles = length(vparams.Angle);
 
-
+% ----- Display Blank screen for BlankTime-----%
+%TIME = GetSecs;
+parallelTTLstartstop(sparams.paralellport,recbit);
+TTLfunction(startbit,recbit);
+StimLog.BlankTime = GetSecs;
+WaitSecs(vparams.BlankTime)
+%WaitSecs(TIME + vparams.BlankTime - GetSecs);
+%TIME = TIME + vparams.BlankTime;
 
 for k = 1:NStim
 Barwidth = StimList(k,1) * sparams.pixel2deg;
@@ -106,6 +138,8 @@ for i=1:size(MatStimList,1)
   
   
   % Flip to the screen
+  TTLfunction(stimbit,recbit);
+  TTLfunction(framebit,recbit);
   vbl  = Screen('Flip', window, vbl + 0.5 * ifi); %(waitframes - 0.5)
   
   WaitSecs(vparams.StimTime); 
@@ -119,12 +153,14 @@ for i=1:size(MatStimList,1)
   Screen('glTranslate', window, -posX, -posY)
   
   Screen('FillRect', window, vparams.BgColour)
+  TTLfunction(stimbit,recbit);
+  TTLfunction(framebit,recbit);
   vbl = Screen('Flip', window, vbl + 0.5 * ifi);
   
   
   % Log in
   StimLog.Stim(i).TimeON = GetSecs - StimLog.BeginTime;  % TimeON    
-  for j = 1:5; srl_write(sparams.serialport,'0'); end
+  %for j = 1:5; srl_write(sparams.serialport,'0'); end
 	WaitSecs(vparams.PreTime); 
   
   WaitSecs(vparams.InterStimTime); 
@@ -132,16 +168,22 @@ for i=1:size(MatStimList,1)
 end
 end
     StimLog.Stim(i).TimeOFF = GetSecs - StimLog.BeginTime; % TimeOFF
-    for j = 1:5; srl_write(sparams.serialport,'0'); end
+    %for j = 1:5; srl_write(sparams.serialport,'0'); end
     
     Screen('FillRect', window, vparams.BgColour)
+    TTLfunction(stimbit,recbit);
+    TTLfunction(framebit,recbit);
     vbl = Screen('Flip', window, vbl + 0.5 * ifi);
     StimLog.Stim(i).EndSweep = GetSecs - StimLog.BeginTime; % EndSweep
-	  for j = 1:5; srl_write(sparams.serialport,'0'); end
+	  %for j = 1:5; srl_write(sparams.serialport,'0'); end
  
 %----- Post Stimulus Pause -----%
-    WaitSecs(vparams.PostTime); 
+    WaitSecs(vparams.PostTime);
+    TTLfunction(stimbit,recbit);
+    TTLfunction(framebit,recbit); 
     StimLog.EndTime = GetSecs - StimLog.BeginTime;
-    for j = 1:5; srl_write(sparams.serialport,'0'); end
+    %for j = 1:5; srl_write(sparams.serialport,'0'); end
+    WaitSecs(vparams.BlankTime);
+    TTLfunction(stopbit,0);
 
-
+end

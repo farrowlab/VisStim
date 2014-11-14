@@ -3,7 +3,7 @@ function StimLog = ShowGrating(window, vparams, sparams)
 % function DriftDemo4([angle=0][, cyclespersecond=1][, freq=1/360][, gratingsize=360][, internalRotation=0])
 % ___________________________________________________________________
 
-%-------------- Initiate Paramaters ---------------%
+%-------------- Initiate TTLpulse---------------%
 if isfield(sparams,'paralellport')
   fprintf(1,"Using the parallel Port.\n")
   TTLfunction = @(x,y)parallelTTLoutput(sparams.paralellport,x,y);
@@ -130,6 +130,7 @@ WaitSecs(vparams.BlankTime)
 
         if (count == 1) || (count == NFrames)        
           TTLfunction(stimbit,recbit);
+          TTLfunction(framebit,recbit);
         else
           TTLfunction(framebit,recbit);
         end
