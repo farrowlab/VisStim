@@ -1,0 +1,23 @@
+%%%%%%%%%%%%%%%%%%%%%%%% General %%%%%%%%%
+c 195	% bgcolor
+b 400	% bullseye size
+o 0 0	% offset x y
+f 1	% framerate factor (slow-down)
+w 75 75	% wait pre post frames
+v 2	% full verbose 
+m 0	% no mask
+z 1 0	% zoom (magnify bmps)
+
+u 446	% UDP port
+l 888	% parallel port
+l 0 3 15 0 0	% Parallel port signals
+t 0 4 60000	% triggered start off 1min timeout
+
++ 9 LPT1 3	new file
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% Userspec %%%%%
+< presentinator_init_tamas.txt
+
+> presentinator.log
+i

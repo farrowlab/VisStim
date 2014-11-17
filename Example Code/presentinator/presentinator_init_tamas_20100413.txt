@@ -1,0 +1,28 @@
+b 300	% bullseye size
+
+d COM1 9600 8 2 1000 % serial port open
+d COM3 9600 8 2 1000 % serial port open
+d COM5 9600 8 1 1000 % shutter
+
+p 3	% um2pixel
+
+l 0 3 0 1 0	% Parallel port signals
+t 0 2 60000	% triggered start off 1min timeout
+
++ 3 COM5 @	shutter open 
++ 4 COM5 A	shutter close
+
++ 11 COM1 pos=1	FW1 IR 
++ 12 COM1 pos=2	FW1 ND0     
++ 13 COM1 pos=3	FW1 ND20    
++ 14 COM1 pos=4	FW1 ND50    
++ 15 COM1 pos=5	FW1 Black   
++ 16 COM1 pos=6	FW1 UV   
+
++ 21 COM3 pos=1	FW2 ND20    
++ 22 COM3 pos=2	FW2 ND30    
++ 23 COM3 pos=3	FW2 ND40    
++ 24 COM3 pos=4	FW2 ND50    
++ 25 COM3 pos=5	FW2 ND0     
++ 26 COM3 pos=6	FW2 ND10    
+
