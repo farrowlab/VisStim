@@ -93,7 +93,7 @@ while main_loop_run
 	
 		case 'Spot'
 			StimLog = ShowSpot(window,vparams,sparams);		      
-      save '/media/nerffs01/Data/StimLog/StimLog' StimLog;
+      %save '/media/nerffs01/Data/StimLog/StimLog' StimLog;
       
     case 'FullField'
       StimLog = ShowFull(window,vparams,sparams);  
