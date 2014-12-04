@@ -5,7 +5,7 @@ import numpy as np
 import time
 import sys
 from argparse import ArgumentParser
-sensapex_cmd = 'sensapex -p /dev/ttyUSB0 -z {0}'
+sensapex_cmd = 'sensapex -p /dev/ttyUSB0 -y {0}'
 
 def advance_until(target,stepsize,waittime,start = 0):
     print('Going to move at {0} micron steps till {1}'.format(stepsize,target))

@@ -5,7 +5,7 @@ import subprocess as sub
 from argparse import ArgumentParser
 from ipdb import set_trace
 
-remoteIP = '10.1.5.20'
+remoteIP = '10.86.1.107'
 remotePort = 1214
 configFile = '/home/farrowlab/configurations/trigger_recording.xml'
 
