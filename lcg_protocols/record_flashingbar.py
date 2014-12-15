@@ -5,9 +5,8 @@ import subprocess as sub
 from argparse import ArgumentParser
 from ipdb import set_trace
 
-remoteIP = '10.1.5.20'
+remoteIP = '10.86.1.107'
 remotePort = 1214
-configFile = '/home/farrowlab/configurations/trigger_recording.xml'
 
 def buildPresentinatorString(pars,options):
     string = ''
@@ -46,6 +45,10 @@ def main():
                         dest='ntrials',action='store',
                         default=ntrials,
                         help = 'Number of trials' + '\033[93m'+ '(Default: {0})'.format(ntrials)+'\033[0m')
+    parser.add_argument('-V','--voltage-clamp',
+                        dest='VC',action='store_true',
+                        default=False,
+                        help = 'Use voltage clamp \033[93m (Current clamp by default))\033[0m')
 
     for par in pars:
         if par[0] is list:
@@ -67,10 +70,17 @@ def main():
     stimMessage = "Class:Flashing Bar;Type:Single;Size:_0.1;Angle:_0;Repeats:1;PreTime:1;PostTime:1;StimTime:1;InterStimTime:5;StimColor:0;BgColour:125 125 125;!!!"
     sock = socket.socket(socket.AF_INET,
                          socket.SOCK_DGRAM) # Open UDP connection
-
+    extra_opts = ''
+    if opts.VC:
+        extra_opts +='-V'
+        print('Recording in voltage clamp!')
     for ii in range(int(options['ntrials'])):
         print("Setting up recording.")
-        proc = sub.Popen('lcg-experiment -c {0}'.format(configFile),shell=True)
+        # Create the stimulus file using the dry-run option
+        string = 'lcg-stimulus-external-trigger --trigger-subdevice 2 --trigger-channel 3 -l 1000 -O none --digital-channels 0,1,2 --trigger-stop-channel 4 --dry-run {0}'.format(extra_opts)
+        # Runs the stim file
+        drun = sub.Popen(string,shell=True,stdout = sub.PIPE)
+        proc = sub.Popen(drun.stdout.read(),shell=True)
         time.sleep(0.1)
         print('Presenting string: {0}'.format(presentCmd))
         sock.sendto(presentCmd, (remoteIP, remotePort))
