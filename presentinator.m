@@ -15,7 +15,7 @@ oldEnableFlag = Screen('Preference', 'SuppressAllWarnings', 1);
  TTL_protocol = 'parallel';
   
 	[status, Myipaddr] = system('ifconfig');
-	IPAddress = '10.86.1.87';  
+	IPAddress = '10.86.1.105'
 	udpIN = 1214;	
 	udpsock=pnet('udpsocket', udpIN)		 
 	pnet(udpsock,'setreadtimeout',0);
