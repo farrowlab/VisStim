@@ -166,7 +166,8 @@ function StimLog = ShowFlashingBar(window,vparams,sparams);
           StimLog.Stim(i).TimeON = GetSecs - StimLog.BeginTime;  % TimeON    
           %for j = 1:5; srl_write(sparams.serialport,'0'); end
 	        WaitSecs(vparams.PreTime); 
-  
+          TTLfunction(stimbit,recbit);
+          TTLfunction(framebit,recbit);
           WaitSecs(vparams.InterStimTime); 
   
       end

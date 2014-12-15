@@ -93,7 +93,6 @@ for a = 1:nangles
   
     %----- Log Stimulus -----%
     TTLfunction(stimbit,recbit);
-    TTLfunction(framebit,recbit);
     StimLog.Stim(i).StartSweep = GetSecs - StimLog.BeginTime; % Start of sweep
     %for j = 1:5; srl_write(sparams.serialport,'0'); end
                              
@@ -201,6 +200,7 @@ for a = 1:nangles
       
       if (n == 1) || (n == FrameNum)        
           TTLfunction(stimbit,recbit);
+          TTLfunction(framebit,recbit);
       else
           TTLfunction(framebit,recbit);
       end
