@@ -43,7 +43,7 @@ oldEnableFlag = Screen('Preference', 'SuppressAllWarnings', 1);
   sparams.rect = rect; 
   sparams.screenid = screenid; 
 	sparams.ifi = Screen('GetFlipInterval', window);   
-  sparams.deg2pixel = 60/1080;           % Need to Set Independantly for Each Setup!!!!
+  sparams.deg2pixel = 60/sparams.screenHeight;           % Need to Set Independantly for Each Setup!!!!
   sparams.pixel2deg = 1/sparams.deg2pixel;
 
 	%---------- KeyBoard Inputs ----------%

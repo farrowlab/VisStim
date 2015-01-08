@@ -210,7 +210,9 @@ for a = 1:nangles
     Screen('glRotate', window, AngleBar, 0, 0); % negative rotation
     Screen('glTranslate', window, -posX, -posY)
     
-    WaitSecs(vparams.InterStimTime); 
+    if i < NStim
+      WaitSecs(vparams.InterStimTime);
+    end 
     
  end
  end 
