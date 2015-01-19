@@ -61,10 +61,10 @@ nangles = length(vparams.Angle);
   %for j = 1:5; srl_write(sparams.serialport,'0'); end 
   for i = 1:size(StimList,1)
     %StimLog.Stim(i).Stimulus = vparams.Shape; 
-    StimLog.Stim(i).Size = StimList(i,1); % Size
-    StimLog.Stim(i).Color = StimList(i,2); % Color
-    StimLog.Stim(i).Speed = StimList(i,3); % Speed
-    StimLog.Stim(i).BgColor = vparams.BgColour; % BgColour
+    StimLog.Angle.Stim(i).Size = StimList(i,1); % Size
+    StimLog.Angle.Stim(i).Color = StimList(i,2); % Color
+    StimLog.Angle.Stim(i).Speed = StimList(i,3); % Speed
+    StimLog.Angle.Stim(i).BgColor = vparams.BgColour; % BgColour
   end
   
   
@@ -72,7 +72,7 @@ nangles = length(vparams.Angle);
   %TIME = GetSecs;
   parallelTTLstartstop(sparams.paralellport,recbit);
   TTLfunction(startbit,recbit);
-  StimLog.BlankTime = GetSecs;
+  StimLog.BlankTime = GetSecs - StimLog.BeginTime;
   WaitSecs(vparams.BlankTime)
   %WaitSecs(TIME + vparams.BlankTime - GetSecs);
   %TIME = TIME + vparams.BlankTime;
@@ -93,7 +93,7 @@ for a = 1:nangles
   
     %----- Log Stimulus -----%
     TTLfunction(stimbit,recbit);
-    StimLog.Stim(i).StartSweep = GetSecs - StimLog.BeginTime; % Start of sweep
+    StimLog.Angle(a).Stim(i).StartSweep = GetSecs - StimLog.BeginTime; % Start of sweep
     %for j = 1:5; srl_write(sparams.serialport,'0'); end
                              
   	%------ Draw bar ------%   
@@ -162,7 +162,7 @@ for a = 1:nangles
       % Log in
       TTLfunction(stimbit,recbit);
       TTLfunction(framebit,recbit);
-      StimLog.Stim(i).TimeON = GetSecs - StimLog.BeginTime;  % TimeON    
+      StimLog.Angle(a).Stim(i).PreTime = GetSecs - StimLog.BeginTime;  % TimeON    
 %      for j = 1:5; srl_write(sparams.serialport,'0'); end
 	    WaitSecs(vparams.PreTime); 
   
@@ -182,16 +182,26 @@ for a = 1:nangles
       % Flip to the screen
       vbl  = Screen('Flip', window, vbl + 0.5 * ifi); %(waitframes - 0.5)
       
-      if (n == 1) || (n == FrameNum)        
+      if (n == 1)
           TTLfunction(stimbit,recbit);
           TTLfunction(framebit,recbit);
+          StimLog.Angle(a).Stim(i).TimeON(i) = GetSecs - StimLog.BeginTime;
+          StimLog.Angle(a).Stim(i).Angle = AngleBar;
+          %StimLog.Angle(a).Stim(i).Pos(n) = SpeedPixPerFrames;
+      elseif  (n == FrameNum+1)        
+          TTLfunction(stimbit,recbit);
+          TTLfunction(framebit,recbit);
+          StimLog.Angle(a).Stim(i).TimeOFF = GetSecs - StimLog.BeginTime;
+          %StimLog.Angle(a).Stim(i).Pos(n) = n*SpeedPixPerFrames;
       else
           TTLfunction(framebit,recbit);
+          %StimLog.Angle(a).Stim(i).Pos(n) = n*SpeedPixPerFrames;
       end
         
     end
     
     
+    tic;
     % Put screen at initial position
     n = 0; 
     while n <= FrameNum
@@ -210,21 +220,22 @@ for a = 1:nangles
     Screen('glRotate', window, AngleBar, 0, 0); % negative rotation
     Screen('glTranslate', window, -posX, -posY)
     
+    dum=toc;
     if i < NStim
-      WaitSecs(vparams.InterStimTime);
+      WaitSecs(vparams.InterStimTime-dum);
     end 
     
  end
  end 
     %----- Stop Bar -----%       % need review
     TTLfunction(stimbit,recbit);
-    StimLog.Stim(i).TimeOFF = GetSecs - StimLog.BeginTime; % TimeOFF
+    StimLog.Stim.StimOFF = GetSecs - StimLog.BeginTime; % TimeOFF
     %for j = 1:5; srl_write(sparams.serialport,'0'); end
       
     Screen('FillRect', window, vparams.BgColour)
     vbl = Screen('Flip', window, vbl + 0.5 * ifi);
     TTLfunction(stimbit,recbit);
-    StimLog.Stim(i).EndSweep = GetSecs - StimLog.BeginTime; % EndSweep
+    StimLog.Stim.EndSweep = GetSecs - StimLog.BeginTime; % EndSweep
 %	  for j = 1:5; srl_write(sparams.serialport,'0'); end
   
     %----- Post Stimulus Pause -----%

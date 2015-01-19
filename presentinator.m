@@ -43,7 +43,7 @@ oldEnableFlag = Screen('Preference', 'SuppressAllWarnings', 1);
   sparams.rect = rect; 
   sparams.screenid = screenid; 
 	sparams.ifi = Screen('GetFlipInterval', window);   
-  sparams.deg2pixel = 60/sparams.screenHeight;           % Need to Set Independantly for Each Setup!!!!
+  sparams.deg2pixel = 70/sparams.screenHeight;           % Need to Set Independantly for Each Setup!!!!
   sparams.pixel2deg = 1/sparams.deg2pixel;
 
 	%---------- KeyBoard Inputs ----------%
@@ -59,6 +59,8 @@ main_loop_run = 1;
 KBState = 'Run';
 disp(['Keyboard State: ' KBState]);
 fdisp(stdout, 'Waiting for orders.')
+
+
 while main_loop_run	
 
 	%----------- Listen to Keyboard ----------%	 
@@ -97,7 +99,7 @@ while main_loop_run
       
     case 'FullField'
       StimLog = ShowFull(window,vparams,sparams);  
-      save '/media/nerffs01/Data/StimLog/StimLog' StimLog;
+      %save '/media/nerffs01/Data/StimLog/StimLog' StimLog;
       
 		case 'Grating'      
       StimLog = ShowGrating(window,vparams,sparams); 
@@ -112,10 +114,43 @@ while main_loop_run
     
     case 'Moving Bar'      
       StimLog = ShowMovingBar(window,vparams,sparams); 
+      file_date = ['/media/NERFFS01/Data/StimLog/StimLog',datestr(now,['yyyy','mm','dd'])];
+      mkdir(file_date);
+      file_Stim = [file_date,'/MovingBar']
+      mkdir(file_Stim);
+      
+      %Check if files have already been created
+      dum = dir(file_Stim);
+      if size(dum,1) > 2
+      CounterMovingBar = str2num(dum(end).name) +1;      
+      else
+      CounterMovingBar = 1;
+      end
+      filename = [file_Stim,'/',num2str(CounterMovingBar)];
+      save(filename,'StimLog');
+      CounterMovingBar = CounterMovingBar+1;
+      %save '/media/nerffs01/Data/StimLog/StimLog' StimLog;
       %save '/media/nerffs01/Data/StimLog/StimLog' StimLog;
       
     case 'Flashing Bar'
-      StimLog = ShowFlashingBar(window,vparams,sparams); 
+      
+      StimLog = ShowFlashingBar(window,vparams,sparams);
+      file_date = ['/media/NERFFS01/Data/StimLog/StimLog',datestr(now,['yyyy','mm','dd'])];
+      mkdir(file_date);
+      file_Stim = [file_date,'/FlashingBar']
+      mkdir(file_Stim);
+      
+      %Check if files have already been created
+      dum = dir(file_Stim);
+      if size(dum,1) > 2
+      CounterFlashingBar = str2num(dum(end).name) +1;      
+      else
+      CounterFlashingBar = 1;
+      end
+      filename = [file_Stim,'/',num2str(CounterFlashingBar)];
+      save(filename,'StimLog');
+      CounterFlashingBar = CounterFlashingBar+1;
+      %save '/home/farrowlab/Desktop/StimLog/StimLog' StimLog;
       %save '/media/nerffs01/Data/StimLog/StimLog' StimLog;
             
 		otherwise
