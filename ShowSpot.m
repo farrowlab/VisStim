@@ -99,7 +99,7 @@ function StimLog = ShowSpot(window,vparams,sparams);
  
  
   %-----------------  Draw Spot  ------------------------%  
-  Screen('gluDisk', window, StimList(i,2), sparams.screenWidth/2, sparams.screenHeight/2,StimList(i,1));
+  Screen('gluDisk', window, StimList(i,2), sparams.screenWidth/2, sparams.screenHeight/2,StimList(i,1)* sparams.pixel2deg);
   vbl = Screen('Flip', window, vbl + 0.5 * ifi);
   TTLfunction(stimbit,recbit);
   TTLfunction(framebit,recbit);

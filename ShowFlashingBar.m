@@ -9,7 +9,7 @@ function StimLog = ShowFlashingBar(window,vparams,sparams);
      stimbit = 2;     % pin 3; timestamp for the stimulus
      framebit = 4;    % pin 4; timestamp for the frame
      startbit = 8;    % pin 5; trigger to start lcg recording
-     stopbit = 16;    % pin 6; trigger to stop lcg recording
+     stopbit = 16;    %f pin 6; trigger to stop lcg recording
   
      % Pin address:
      % Pin    2   3   4   5   6   7   8   9
@@ -45,15 +45,18 @@ function StimLog = ShowFlashingBar(window,vparams,sparams);
 
   
   %-----------------  Log Stimulus  ----------------------%
-  StimLog.StimulusClass = 'Moving Bar';
+  StimLog.StimulusClass = 'Flashing Bar';
   StimLog.BeginTime = GetSecs;  
+  
+  % Log are added at the stimulus onset
   %for j = 1:5; srl_write(sparams.serialport,'0'); end 
-  for i = 1:size(StimList,1)
+  %for i = 1:NStim
     %StimLog.Stim(i).Stimulus = vparams.Shape; 
-    StimLog.Stim(i).Size = StimList(i,1); % Size
-    StimLog.Stim(i).Color = StimList(i,2); % Color    
-    StimLog.Stim(i).BgColor = vparams.BgColour; % BgColour
-  end 
+   % StimLog.Stim(i).Size = StimList(i,1); % Size
+   % StimLog.Stim(i).Color = StimList(i,2); % Color    
+   % StimLog.Stim(i).BgColor = vparams.BgColour; % BgColour
+    %StimLog.
+  %end 
  
 
   %-----------------  Initiate ---------------------------%
@@ -64,7 +67,7 @@ function StimLog = ShowFlashingBar(window,vparams,sparams);
   %TIME = GetSecs;
   parallelTTLstartstop(sparams.paralellport,recbit);
   TTLfunction(startbit,recbit);
-  StimLog.BlankTime = GetSecs;
+  StimLog.BlankTime(1) = GetSecs - StimLog.BeginTime;
   WaitSecs(vparams.BlankTime)
   %WaitSecs(TIME + vparams.BlankTime - GetSecs);
   %TIME = TIME + vparams.BlankTime;
@@ -75,36 +78,38 @@ function StimLog = ShowFlashingBar(window,vparams,sparams);
 
       for a = 1:nangles
           AngleBar = vparams.Angle(a);
+          %StimLog.Angle( = GetSecs;
           if AngleBar == 0 || AngleBar==180
-              PixelNumTraj = sparams.screenWidth - Barwidth; 
+              PixelNumTraj = sparams.screenWidth; %- Barwidth; 
               posX = -Barwidth/2 + AngleBar/180*(sparams.screenWidth+Barwidth);
               posY = sparams.screenHeight/2;         
           elseif AngleBar==90 || AngleBar==270
-              PixelNumTraj = sparams.screenHeight - Barwidth;
+              PixelNumTraj = sparams.screenHeight; % - Barwidth;
               posX = sparams.screenWidth/2;
               posY = -Barwidth/2-(sparams.screenHeight+Barwidth)*(AngleBar-270)/180;          
           elseif 0<AngleBar && AngleBar<90
-              PixelNumTraj = sparams.screenHeight*sind(AngleBar) + sparams.screenWidth*cosd(AngleBar) - Barwidth;
+              PixelNumTraj = sparams.screenHeight*sind(AngleBar) + sparams.screenWidth*cosd(AngleBar); % - Barwidth;
               posX = -Barwidth/2*cosd(AngleBar);
               posY = Barwidth/2*sind(AngleBar)+sparams.screenHeight;          
           elseif 90<AngleBar && AngleBar<180
-              PixelNumTraj = -sparams.screenWidth*cosd(AngleBar) + sparams.screenHeight*sind(AngleBar) - Barwidth;
+              PixelNumTraj = -sparams.screenWidth*cosd(AngleBar) + sparams.screenHeight*sind(AngleBar); % - Barwidth;
               posX = +sparams.screenWidth-Barwidth/2*cosd(AngleBar);
               posY = +Barwidth/2*sind(AngleBar)+sparams.screenHeight;          
           elseif 180<AngleBar && AngleBar<270
-              PixelNumTraj = -sparams.screenHeight*sind(AngleBar) - sparams.screenWidth*cosd(AngleBar) - Barwidth;
+              PixelNumTraj = -sparams.screenHeight*sind(AngleBar) - sparams.screenWidth*cosd(AngleBar); % - Barwidth;
               posX = sparams.screenWidth-Barwidth/2*cosd(AngleBar);
               posY = +Barwidth/2*sind(AngleBar);          
           elseif 270<AngleBar && AngleBar<360
-              PixelNumTraj = sparams.screenWidth*cosd(AngleBar) - sparams.screenHeight*sind(AngleBar) - Barwidth;
+              PixelNumTraj = sparams.screenWidth*cosd(AngleBar) - sparams.screenHeight*sind(AngleBar); % - Barwidth;
               posX = -Barwidth/2*cosd(AngleBar);
               posY = +Barwidth/2*sind(AngleBar);           
           end
 
           % Grid 
-          NumPosBar = PixelNumTraj/(Barwidth/2);        
+          NumPosBar = ceil(PixelNumTraj/(Barwidth/2));        
           Posgrid = nan(NumPosBar+1,4);
-          Posgrid(:,1) = Barwidth/2:Barwidth/2:(NumPosBar+1)*Barwidth/2;
+          Posgrid(:,1) = 0:Barwidth/2:(NumPosBar)*Barwidth/2;
+          %Posgrid(:,1) = Barwidth/2:Barwidth/2:(NumPosBar+1)*Barwidth/2;
           Posgrid(:,2) = AngleBar;
           Posgrid(:,3) = posX; % intial position of the bar
           Posgrid(:,4) = posY;
@@ -127,7 +132,7 @@ function StimLog = ShowFlashingBar(window,vparams,sparams);
           Maxbar = 2*max([abs(sparams.screenHeight*cosd(AngleBar)) abs(sparams.screenWidth*sind(AngleBar))]);
           posX = MatStimList(i,3);
           posY = MatStimList(i,4);
-          baseRect = [0 0 Barwidth Maxbar];
+          baseRect = [0 0 Barwidth Maxbar];          
   
   %rotate and put the bar at the edge of the screen
           Screen('glTranslate', window, posX, posY) % translate image (but need to fillrect again) positive values go oppostie direction
@@ -144,9 +149,15 @@ function StimLog = ShowFlashingBar(window,vparams,sparams);
   % Flip to the screen
           TTLfunction(stimbit,recbit);
           TTLfunction(framebit,recbit);
+          StimLog.Stim(k).Angle(i) = AngleBar;
+          StimLog.Stim(k).Pos(i) = MatStimList(i,1)+Barwidth/2;
+          StimLog.Stim(k).TimeON(i) = GetSecs - StimLog.BeginTime;
+          StimLog.Stim(k).Size = StimList(k,1); % Size
+          StimLog.Stim(k).Color = StimList(k,2); % AngColor    
+          StimLog.Stim(k).BgColor = vparams.BgColour; % BgColour
           vbl  = Screen('Flip', window, vbl + 0.5 * ifi); %(waitframes - 0.5)
   
-          WaitSecs(vparams.StimTime); 
+          WaitSecs(vparams.StimTime);  
   
   % translate back
           Screen('glTranslate', window, -MatStimList(i,1)-Barwidth/2, 0);
@@ -163,32 +174,36 @@ function StimLog = ShowFlashingBar(window,vparams,sparams);
   
   
   % Log in
-          StimLog.Stim(i).TimeON = GetSecs - StimLog.BeginTime;  % TimeON    
+          StimLog.Stim(k).TimeOFF(i) = GetSecs - StimLog.BeginTime;  % TimeON    
           %for j = 1:5; srl_write(sparams.serialport,'0'); end
-	        WaitSecs(vparams.PreTime); 
-  
+	        %WaitSecs(vparams.PreTime); 
+          TTLfunction(stimbit,recbit);
+          TTLfunction(framebit,recbit);
           WaitSecs(vparams.InterStimTime); 
   
       end
+  %WaitSecs(vparams.InterStimTime)    
+  StimLog.Stim(k).StimOFF(i) = GetSecs - StimLog.BeginTime; % TimeOFF    
   end
     
-  StimLog.Stim(i).TimeOFF = GetSecs - StimLog.BeginTime; % TimeOFF
   %for j = 1:5; srl_write(sparams.serialport,'0'); end
-    
-  Screen('FillRect', window, vparams.BgColour)
+  
+% Screen already in background color  
+  %Screen('FillRect', window, vparams.BgColour)
   TTLfunction(stimbit,recbit);
   TTLfunction(framebit,recbit);
-  vbl = Screen('Flip', window, vbl + 0.5 * ifi);
+  %vbl = Screen('Flip', window, vbl + 0.5 * ifi);
   StimLog.Stim(i).EndSweep = GetSecs - StimLog.BeginTime; % EndSweep
   %for j = 1:5; srl_write(sparams.serialport,'0'); end
  
  
   %-----------------  Post Stimulus Pause  ---------------%
-  WaitSecs(vparams.PostTime);
+  %WaitSecs(vparams.PostTime);
   TTLfunction(stimbit,recbit);
   TTLfunction(framebit,recbit); 
-  StimLog.EndTime = GetSecs - StimLog.BeginTime;
+  StimLog.BlankTime(2) = GetSecs - StimLog.BeginTime;
   %for j = 1:5; srl_write(sparams.serialport,'0'); end
   WaitSecs(vparams.BlankTime);
   TTLfunction(stopbit,0);
+  StimLog.EndTime = GetSecs - StimLog.BeginTime;
 
