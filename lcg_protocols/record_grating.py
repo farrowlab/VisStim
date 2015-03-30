@@ -4,7 +4,7 @@ import time
 import subprocess as sub
 from argparse import ArgumentParser
 from ipdb import set_trace
-
+from glob import glob
 remoteIP = '10.86.1.107'
 remotePort = 1214
 
@@ -52,11 +52,7 @@ def main():
                         dest='VC',action='store_true',
                         default=False,
                         help = 'Use voltage clamp \033[93m (Current clamp by default))\033[0m')
-    parser.add_argument('-V','--voltage-clamp',
-                        dest='VC',action='store_true',
-                        default=False,
-                        help = 'Use voltage clamp \033[93m (Current clamp by default))\033[0m')
-
+    
     for par in pars:
         if par[0] is list:
             tmp = ','.join([str(i) for i in par[1]])
@@ -83,16 +79,27 @@ def main():
         extra_opts +='-V'
         print('Recording in voltage clamp!')
     for ii in range(int(options['ntrials'])):
+        filename = time.strftime('%Y%m%d%H%M%S')+'.h5'
+        oldfiles = glob('*.h5')
         print("Setting up recording.")
         # Create the stimulus file using the dry-run option
-        string = 'lcg-stimulus-external-trigger --trigger-subdevice 2 --trigger-channel 3 -l 1000 -O none --digital-channels 0,1,2 --trigger-stop-channel 4 --dry-run {0}'.format(extra_opts)
+        string = 'lcg-stimulus-external-trigger --trigger-subdevice 2 --trigger-channel 3 -l 10000 -O none --digital-channels 0,1,2 --trigger-stop-channel 4 --dry-run {0} {1}'.format(extra_opts,'-o '+filename)
+#        string = 'lcg-stimulus-external-trigger --trigger-subdevice 2 --trigger-channel 3 -l 10000 -O none --digital-channels 0,1,2 --trigger-stop-channel 4 --dry-run {0}'.format(extra_opts)
         # Runs the stim file
         drun = sub.Popen(string,shell=True,stdout = sub.PIPE)
         proc = sub.Popen(drun.stdout.read(),shell=True)
         time.sleep(0.1)
+        presentCmd = presentCmd[:-3] + 'Filename:' + filename + ';!!!'
         print('Presenting string: {0}'.format(presentCmd))
         sock.sendto(presentCmd, (remoteIP, remotePort))
         proc.communicate()    
-
+        # For the annotation
+        files = glob('*.h5')
+        for f in files:
+            if not f in oldfiles:
+                sub.call('lcg-annotate -m "{1}" {0}'.format(f,stimMessage)
+                    ,shell=True)
+                print('Writing to {0}'.format(f))
+                break
 if  __name__ == '__main__':
     main()

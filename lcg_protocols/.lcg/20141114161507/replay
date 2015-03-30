@@ -1,2 +1,0 @@
-#!/bin/bash
-lcg-experiment -V 4 -c stimulus.xml -r 0

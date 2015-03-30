@@ -1,0 +1,36 @@
+#/usr/bin/env bash
+#
+# Executable in the folder of "experiments"
+# Copy data to NERFFS01, the first input is the folder to copy and the 
+# second is the destination folder inside (NERFFS01/Data)
+#
+
+FOLDER=${1%/}
+NERFFS="/media/NERFFS01/Data/"
+DEST=$2
+
+if [ -z "$FOLDER" ]; then
+	echo "You need to specify an input folder."
+	exit
+fi
+
+if [ -z "$DEST" ]; then
+	echo "You need to specify a destination folder."
+	exit
+fi
+
+# Update folder name and check if it is created already
+DEST=$NERFFS""$(printf %05d $DEST)
+echo "Copying data from "$FOLDER" to "$NERFFS01$DEST
+
+if [ -d $NERFFS01$DEST ]; then
+	echo 'Directory was already there.'
+	
+else
+	mkdir -p $DEST
+	echo 'Directory created.'
+fi
+
+# Copy only what files that changed from the data already copied
+rsync -ratu --progress $FOLDER $DEST/	
+
