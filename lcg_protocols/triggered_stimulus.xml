@@ -1,7 +1,8 @@
 <lcg>
   <simulation>
-    <rate>20000.0</rate>
-    <tend>1000.0</tend>
+    <outfile>20150330171813.h5</outfile>
+    <rate>10000.0</rate>
+    <tend>10000.0</tend>
     <trigger>
       <subdevice>2</subdevice>
       <channel>3</channel>
@@ -13,6 +14,7 @@
       <id>0</id>
       <parameters>
         <compress>True</compress>
+        <filename>20150330171813.h5</filename>
       </parameters>
     </entity>
     <entity>
