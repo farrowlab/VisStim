@@ -29,6 +29,10 @@ function [VStim P] = ParseUDPVStim(udp);
       for i = 1:length(Parameters)      
         Parameter = Parameters{i};        
         switch Parameter
+          case 'Filename'
+	    S = regexp(udp, ';Filename:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.Filename = udp(S:E);                                    
           case 'Shape'
             S = regexp(udp, ';Shape:','end')+1;
             E = sc(find(sc > S,1,'first'))-1;            
@@ -96,6 +100,10 @@ function [VStim P] = ParseUDPVStim(udp);
       for i = 1:length(Parameters)      
         Parameter = Parameters{i};        
         switch Parameter       
+          case 'Filename'
+	    S = regexp(udp, ';Filename:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.Filename = udp(S:E);                                    
           case 'Scale'
             S = regexp(udp, ';Scale:','end')+1;
             E = sc(find(sc > S,1,'first'))-1;            
@@ -150,7 +158,11 @@ function [VStim P] = ParseUDPVStim(udp);
       P.Type = Type;
       for i = 1:length(Parameters)      
         Parameter = Parameters{i};        
-        switch Parameter       
+        switch Parameter 
+          case 'Filename'
+	    S = regexp(udp, ';Filename:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.Filename = udp(S:E);                                    
           case 'Size'
             S = regexp(udp, ';Size:','end')+1;
             E = sc(find(sc > S,1,'first'))-1;            
@@ -225,7 +237,11 @@ function [VStim P] = ParseUDPVStim(udp);
       P.Type = Type;
       for i = 1:length(Parameters)      
         Parameter = Parameters{i};        
-        switch Parameter       
+        switch Parameter     
+          case 'Filename'
+	    S = regexp(udp, ';Filename:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.Filename = udp(S:E);                                      
           case 'Size'
             S = regexp(udp, ';Size:','end')+1;
             E = sc(find(sc > S,1,'first'))-1;            
@@ -287,7 +303,11 @@ function [VStim P] = ParseUDPVStim(udp);
       P.Type = Type;
       for i = 1:length(Parameters)      
         Parameter = Parameters{i};        
-        switch Parameter       
+        switch Parameter
+          case 'Filename'
+	    S = regexp(udp, ';Filename:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.Filename = udp(S:E);                                    
           case 'Size'
             S = regexp(udp, ';Size:','end')+1;
             E = sc(find(sc > S,1,'first'))-1;            
@@ -362,7 +382,11 @@ function [VStim P] = ParseUDPVStim(udp);
       P.Type = Type;
       for i = 1:length(Parameters)      
         Parameter = Parameters{i};        
-        switch Parameter       
+        switch Parameter
+          case 'Filename'
+	    S = regexp(udp, ';Filename:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.Filename = udp(S:E);                                    
           case 'Size'
             S = regexp(udp, ';Size:','end')+1;
             E = sc(find(sc > S,1,'first'))-1;            

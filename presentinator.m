@@ -63,6 +63,7 @@ fdisp(stdout, 'Waiting for orders.')
 
 while main_loop_run	
 
+clear('StimLog','vparams','filename')  
 	%----------- Listen to Keyboard ----------%	 
 	Listen2Keyboard;
 	
@@ -71,7 +72,8 @@ while main_loop_run
 	  if stimsize ~= 0  	      
     fdisp(stdout,['Visual Stimulus Received. Size = ' num2str(stimsize)]); 
 	  	udpVisStim = pnet(udpsock,'read'); % command string
-	  	[VStim vparams] = ParseUDPVStim(udpVisStim);     
+    [VStim vparams] = ParseUDPVStim(udpVisStim);
+    fdisp(stdout,udpVisStim);fflush(stdout)
       assignin('base','vp',vparams)
 	  else
 	  	VStim = [];
@@ -102,7 +104,21 @@ while main_loop_run
       %save '/media/nerffs01/Data/StimLog/StimLog' StimLog;
       
 		case 'Grating'      
-      StimLog = ShowGrating(window,vparams,sparams); 
+      StimLog = ShowGrating(window,vparams,sparams);
+      file_date = ['/home/farrowlab/StimLog/StimLog',datestr(now,['yyyy','mm','dd'])];
+      mkdir(file_date);
+      file_Stim = [file_date,'/Grating']
+      mkdir(file_Stim);
+      
+      %Check if files have already been created
+      dum = dir(file_Stim);
+      if size(dum,1) > 2
+      CounterGrating = str2num(dum(end).name) +1;      
+      else
+      CounterGrating = 1;
+      end
+      filename = [file_Stim,'/',num2str(CounterGrating)];
+      CounterGrating = CounterGrating+1; 
       #save '/media/nerffs01/Data/StimLog/StimLog' StimLog;
       
 		case 'Noise'
@@ -114,7 +130,7 @@ while main_loop_run
     
     case 'Moving Bar'      
       StimLog = ShowMovingBar(window,vparams,sparams); 
-      file_date = ['/media/NERFFS01/Data/StimLog/StimLog',datestr(now,['yyyy','mm','dd'])];
+      file_date = ['/home/farrowlab/StimLog/StimLog',datestr(now,['yyyy','mm','dd'])];
       mkdir(file_date);
       file_Stim = [file_date,'/MovingBar']
       mkdir(file_Stim);
@@ -127,7 +143,6 @@ while main_loop_run
       CounterMovingBar = 1;
       end
       filename = [file_Stim,'/',num2str(CounterMovingBar)];
-      save(filename,'StimLog');
       CounterMovingBar = CounterMovingBar+1;
       %save '/media/nerffs01/Data/StimLog/StimLog' StimLog;
       %save '/media/nerffs01/Data/StimLog/StimLog' StimLog;
@@ -135,7 +150,7 @@ while main_loop_run
     case 'Flashing Bar'
       
       StimLog = ShowFlashingBar(window,vparams,sparams);
-      file_date = ['/media/NERFFS01/Data/StimLog/StimLog',datestr(now,['yyyy','mm','dd'])];
+      file_date = ['/home/farrowlab/StimLog/StimLog',datestr(now,['yyyy','mm','dd'])];
       mkdir(file_date);
       file_Stim = [file_date,'/FlashingBar']
       mkdir(file_Stim);
@@ -148,19 +163,23 @@ while main_loop_run
       CounterFlashingBar = 1;
       end
       filename = [file_Stim,'/',num2str(CounterFlashingBar)];
-      save(filename,'StimLog');
       CounterFlashingBar = CounterFlashingBar+1;
       %save '/home/farrowlab/Desktop/StimLog/StimLog' StimLog;
       %save '/media/nerffs01/Data/StimLog/StimLog' StimLog;
             
-		otherwise
-			if ~isempty(VStim)
-				fdisp(stdout,'Stimulus Not Programed Correctly');
-			else
-			end
-	end
-  
-		                	
+      otherwise
+	if ~isempty(VStim)
+         	fdisp(stdout,'Stimulus Not Programed Correctly');
+        end
+      end
+      try
+       [~,filename] = fileparts(vparams.Filename);
+       filename = [file_Stim,'/',filename,'.mat'];
+       StimLog.Filename = vparams.Filename;
+      end
+      if exist('filename','var') & exist('StimLog','var')
+         save(filename,'StimLog');
+      end
 end
 
 %% Clean up and Close Everything -- Bye Bye

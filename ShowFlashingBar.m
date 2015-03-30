@@ -119,6 +119,7 @@ function StimLog = ShowFlashingBar(window,vparams,sparams);
 
       
   %-----------------  randomize matrix (perm)  -----------%
+      rand('state',0);
       order = randperm(size(MatStimList,1));
       MatStimList = MatStimList(order,:);
 

@@ -7,7 +7,7 @@ function timePassed = parallelTTLstartstop(parport,bit)
   % Example:
   %     timePassed = parallelTTLoutput(serialport,1);
 
- pulseDuration = 0.0002;
+ pulseDuration = 0.001;
  % Output TTL
  timePulse = GetSecs();
  pp_data(parport,bit);

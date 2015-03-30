@@ -8,7 +8,7 @@ function timePassed = parallelTTLoutput(parport,bit,oldbit)
   %     timePassed = parallelTTLoutput(serialport,1);
  
   pp_data(parport,oldbit);
-  pulseDuration = 0.0002;
+  pulseDuration = 0.001;
   % Output TTL
   timePulse = GetSecs();
   newbit = oldbit + bit; 

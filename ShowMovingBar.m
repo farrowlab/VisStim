@@ -134,10 +134,11 @@ for a = 1:nangles
           posY = +Barwidth/2*sind(AngleBar);   
         end
         FrameNum = PixelNumTraj/SpeedPixPerFrames;
-        Maxbar = 2*max([abs(sparams.screenHeight*cosd(AngleBar)) abs(sparams.screenWidth*sind(AngleBar))]);
-        
+        %Maxbar = 2*max([abs(sparams.screenHeight*cosd(AngleBar)) abs(sparams.screenWidth*sind(AngleBar))]);
+
         % Size of the bar
-        baseRect = [0 0 Barwidth Maxbar]; % baseRect = [-xmin -ymin xmax ymax];
+        baseRect = [0 0 Barwidth sparams.screenHeight]; 
+        %baseRect = [0 0 Barwidth Maxbar]; % baseRect = [-xmin -ymin xmax ymax];
     
     
       % Rotate bar
@@ -208,12 +209,6 @@ for a = 1:nangles
       n = n + 1;
       Screen('glTranslate', window, -SpeedPixPerFrames, 0);
       
-      if (n == 1) || (n == FrameNum)        
-          TTLfunction(stimbit,recbit);
-          TTLfunction(framebit,recbit);
-      else
-          TTLfunction(framebit,recbit);
-      end
             
     end
     Screen('glTranslate', window, posX, posY) % translate image (but need to fillrect again) positive values go oppostie direction

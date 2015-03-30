@@ -20,7 +20,7 @@ function BullsEye(ONOFF,win,sparams,vparams)
 ifi = Screen('GetFlipInterval', win);
 
 % Get and write Bullseye image to texture
-BullsEyeImage = imread ('/home/farrowlab/Visual Stimuli/images/bullseye.bmp');
+BullsEyeImage = imread ('/home/farrowlab/visual_stimuli/images/bullseye512.bmp');
 TextureIndex = Screen('MakeTexture', win, BullsEyeImage, 0, 0, 0, 0, 0);
 
 % Wait for release of all keys on keyboard, then sync us to retrace:
@@ -41,7 +41,7 @@ vbl = Screen('Flip', win);
     %---------- Draw BullsEye ----------%    
     if ONOFF == 1 
     % Draw bullseye, centered on the screen, with given rotation 'angle',
-        	Screen('DrawTexture', win, TextureIndex, [0 0 128 128], [X Y Size Size], [], [], [], [], [], [], []);
+        	Screen('DrawTexture', win, TextureIndex, [], [], [], [], [], [], [], [], []);
     else
         	%Screen('DrawTexture', win, TextureIndex, [], [0 0 250 250], [], [], [], [], [], [], []);
     end
