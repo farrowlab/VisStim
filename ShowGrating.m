@@ -105,7 +105,7 @@ WaitSecs(vparams.BlankTime)
       
       vbl = Screen('Flip', win);
       TTLfunction(stimbit,recbit)
-      WaitSecs(vparams.InterStimTime);
+      WaitSecs(vparams.PostTime);
       StimLog.Stim(i).StartSweep = vbl - StimLog.BeginTime;
       %WaitSecs(TIME + vparams.InterStimTime - GetSecs);
       %TIME = TIME + vparams.InterStimTime;
@@ -144,7 +144,7 @@ WaitSecs(vparams.BlankTime)
     end
   end
 Screen('FillRect', window, Background)
-WaitSecs(vparams.PostTime);
+WaitSecs(vparams.InterStimTime);
 vbl = Screen('Flip', win);
 TTLfunction(stimbit,recbit);
 StimLog.EndTime = vbl - StimLog.BeginTime;

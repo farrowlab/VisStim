@@ -73,7 +73,7 @@ clear('StimLog','vparams','filename')
     fdisp(stdout,['Visual Stimulus Received. Size = ' num2str(stimsize)]); 
 	  	udpVisStim = pnet(udpsock,'read'); % command string
     [VStim vparams] = ParseUDPVStim(udpVisStim);
-    fdisp(stdout,udpVisStim);fflush(stdout)
+    %fdisp(stdout,udpVisStim);fflush(stdout)
       assignin('base','vp',vparams)
 	  else
 	  	VStim = [];
@@ -110,22 +110,22 @@ clear('StimLog','vparams','filename')
       file_Stim = [file_date,'/Grating']
       mkdir(file_Stim);
       
-      %Check if files have already been created
-      dum = dir(file_Stim);
-      if size(dum,1) > 2
-      CounterGrating = str2num(dum(end).name) +1;      
-      else
-      CounterGrating = 1;
-      end
-      filename = [file_Stim,'/',num2str(CounterGrating)];
-      CounterGrating = CounterGrating+1; 
+%      %Check if files have already been created
+%      dum = dir(file_Stim);
+%      if size(dum,1) > 2
+%      CounterGrating = str2num(dum(end).name) +1;      
+%      else
+%      CounterGrating = 1;
+%      end
+%      filename = [file_Stim,'/',num2str(CounterGrating)];
+%      CounterGrating = CounterGrating+1; 
       #save '/media/nerffs01/Data/StimLog/StimLog' StimLog;
       
 		case 'Noise'
     fdisp(stdout,'Picking Noise Stimuli.');       
     sparams.dontclear = 0;
     StimLog = PickNoise(window,vparams,sparams);
-    save '/media/nerffs01/Data/StimLog/StimLog' StimLog;
+%    save '/media/nerffs01/Data/StimLog/StimLog' StimLog;
     assignin('base','StimLog',StimLog);
     
     case 'Moving Bar'      
@@ -135,15 +135,15 @@ clear('StimLog','vparams','filename')
       file_Stim = [file_date,'/MovingBar']
       mkdir(file_Stim);
       
-      %Check if files have already been created
-      dum = dir(file_Stim);
-      if size(dum,1) > 2
-      CounterMovingBar = str2num(dum(end).name) +1;      
-      else
-      CounterMovingBar = 1;
-      end
-      filename = [file_Stim,'/',num2str(CounterMovingBar)];
-      CounterMovingBar = CounterMovingBar+1;
+%      %Check if files have already been created
+%      dum = dir(file_Stim);
+%      if size(dum,1) > 2
+%      CounterMovingBar = str2num(dum(end).name) +1;      
+%      else
+%      CounterMovingBar = 1;
+%      end
+%      filename = [file_Stim,'/',num2str(CounterMovingBar)];
+%      CounterMovingBar = CounterMovingBar+1;
       %save '/media/nerffs01/Data/StimLog/StimLog' StimLog;
       %save '/media/nerffs01/Data/StimLog/StimLog' StimLog;
       
@@ -155,15 +155,15 @@ clear('StimLog','vparams','filename')
       file_Stim = [file_date,'/FlashingBar']
       mkdir(file_Stim);
       
-      %Check if files have already been created
-      dum = dir(file_Stim);
-      if size(dum,1) > 2
-      CounterFlashingBar = str2num(dum(end).name) +1;      
-      else
-      CounterFlashingBar = 1;
-      end
-      filename = [file_Stim,'/',num2str(CounterFlashingBar)];
-      CounterFlashingBar = CounterFlashingBar+1;
+%      %Check if files have already been created
+%      dum = dir(file_Stim);
+%      if size(dum,1) > 2
+%      CounterFlashingBar = str2num(dum(end).name) +1;      
+%      else
+%      CounterFlashingBar = 1;
+%      end
+%      filename = [file_Stim,'/',num2str(CounterFlashingBar)];
+%      CounterFlashingBar = CounterFlashingBar+1;
       %save '/home/farrowlab/Desktop/StimLog/StimLog' StimLog;
       %save '/media/nerffs01/Data/StimLog/StimLog' StimLog;
             
@@ -178,7 +178,7 @@ clear('StimLog','vparams','filename')
        StimLog.Filename = vparams.Filename;
       end
       if exist('filename','var') & exist('StimLog','var')
-         save(filename,'StimLog');
+         save ('-mat7-binary',filename,'StimLog');
       end
 end
 

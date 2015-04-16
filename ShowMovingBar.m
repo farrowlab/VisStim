@@ -134,11 +134,11 @@ for a = 1:nangles
           posY = +Barwidth/2*sind(AngleBar);   
         end
         FrameNum = PixelNumTraj/SpeedPixPerFrames;
-        %Maxbar = 2*max([abs(sparams.screenHeight*cosd(AngleBar)) abs(sparams.screenWidth*sind(AngleBar))]);
+        Maxbar = 2*max([abs(sparams.screenHeight*cosd(AngleBar)) abs(sparams.screenWidth*sind(AngleBar))]);
 
         % Size of the bar
-        baseRect = [0 0 Barwidth sparams.screenHeight]; 
-        %baseRect = [0 0 Barwidth Maxbar]; % baseRect = [-xmin -ymin xmax ymax];
+        %baseRect = [0 0 Barwidth sparams.screenHeight]; 
+        baseRect = [0 0 Barwidth Maxbar]; % baseRect = [-xmin -ymin xmax ymax];
     
     
       % Rotate bar
