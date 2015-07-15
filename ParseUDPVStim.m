@@ -766,7 +766,145 @@ function [VStim P] = ParseUDPVStim(udp);
       end
       
       
+    case 'Translating Expanding Circle to Center'
+      VStim = Class;
+      P.Type = Type;
+      for i = 1:length(Parameters)      
+        Parameter = Parameters{i};        
+        switch Parameter
+          case 'Filename'
+	          S = regexp(udp, ';Filename:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.Filename = udp(S:E);                                    
+          case 'StartSize'
+            S = regexp(udp, ';StartSize:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            SS = udp(S:E)
+            idx = regexp(SS,'_')
+            SS(idx) = ' ';            
+            P.StartSize = str2num(SS);
+          case 'StopSize'
+            S = regexp(udp, ';StopSize:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            SS = udp(S:E)
+            idx = regexp(SS,'_')
+            SS(idx) = ' ';            
+            P.StopSize = str2num(SS);  
+          case 'Trial'
+            S = regexp(udp, ';Trial:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.Trial = str2num(udp(S:E));
+          case 'Speed'
+            S = regexp(udp, ';Speed:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            SS = udp(S:E)
+            idx = regexp(SS,'_')
+            SS(idx) = ' ';            
+            P.Speed = str2num(SS);
+          case 'Angle'
+            S = regexp(udp, ';Angle:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            SS = udp(S:E)
+            idx = regexp(SS,'_')
+            SS(idx) = ' ';            
+            P.Angle = str2num(SS);           
+          case 'ISI'
+            S = regexp(udp, ';ISI:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.ISI = str2num(udp(S:E)); 
+          case 'StimLum'
+            S = regexp(udp, ';StimLum:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.StimLum = str2num(udp(S:E));                                      
+          case 'Xpos'
+            S = regexp(udp, ';Xpos:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            SS = udp(S:E)
+            idx = regexp(SS,'_')
+            SS(idx) = ' ';            
+            P.Xpos = str2num(SS);
+          case 'Ypos'
+            S = regexp(udp, ';Ypos:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            SS = udp(S:E)
+            idx = regexp(SS,'_')
+            SS(idx) = ' ';            
+            P.Ypos = str2num(SS);
+          otherwise
+        end
+      end
+      
+      
     
+    case 'Translating Expanding Circle from Center'
+      VStim = Class;
+      P.Type = Type;
+      for i = 1:length(Parameters)      
+        Parameter = Parameters{i};        
+        switch Parameter
+          case 'Filename'
+	          S = regexp(udp, ';Filename:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.Filename = udp(S:E);                                    
+          case 'StartSize'
+            S = regexp(udp, ';StartSize:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            SS = udp(S:E)
+            idx = regexp(SS,'_')
+            SS(idx) = ' ';            
+            P.StartSize = str2num(SS);
+          case 'StopSize'
+            S = regexp(udp, ';StopSize:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            SS = udp(S:E)
+            idx = regexp(SS,'_')
+            SS(idx) = ' ';            
+            P.StopSize = str2num(SS);  
+          case 'Trial'
+            S = regexp(udp, ';Trial:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.Trial = str2num(udp(S:E));
+          case 'Speed'
+            S = regexp(udp, ';Speed:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            SS = udp(S:E)
+            idx = regexp(SS,'_')
+            SS(idx) = ' ';            
+            P.Speed = str2num(SS);
+          case 'Angle'
+            S = regexp(udp, ';Angle:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            SS = udp(S:E)
+            idx = regexp(SS,'_')
+            SS(idx) = ' ';            
+            P.Angle = str2num(SS);           
+          case 'ISI'
+            S = regexp(udp, ';ISI:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.ISI = str2num(udp(S:E)); 
+          case 'StimLum'
+            S = regexp(udp, ';StimLum:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.StimLum = str2num(udp(S:E));                                      
+          case 'Xpos'
+            S = regexp(udp, ';Xpos:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            SS = udp(S:E)
+            idx = regexp(SS,'_')
+            SS(idx) = ' ';            
+            P.Xpos = str2num(SS);
+          case 'Ypos'
+            S = regexp(udp, ';Ypos:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            SS = udp(S:E)
+            idx = regexp(SS,'_')
+            SS(idx) = ' ';            
+            P.Ypos = str2num(SS);
+          otherwise
+        end
+      end
+      
+      
     otherwise
       VStim = 1;
       vparam = 2; 

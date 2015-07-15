@@ -218,7 +218,24 @@ clear('StimLog','vparams','filename')
       mkdir(file_Stim);
     
     
+    case 'Translating Expanding Circle to Center'
       
+      StimLog = ShowTranslatingExpandingCircletoCenter(window,vparams,sparams);
+      file_date = ['/home/farrowlab/StimLog/StimLog',datestr(now,['yyyy','mm','dd'])];
+      mkdir(file_date);
+      file_Stim = [file_date,'/TranslatingExpandingCircletoCenter']
+      mkdir(file_Stim);
+      
+    
+    case 'Translating Expanding Circle from Center'
+      
+      StimLog = ShowTranslatingExpandingCirclefromCenter(window,vparams,sparams);
+      file_date = ['/home/farrowlab/StimLog/StimLog',datestr(now,['yyyy','mm','dd'])];
+      mkdir(file_date);
+      file_Stim = [file_date,'/TranslatingExpandingCirclefromCenter']
+      mkdir(file_Stim);
+     
+     
     otherwise
 	if ~isempty(VStim)
          	fdisp(stdout,'Stimulus Not Programed Correctly');
