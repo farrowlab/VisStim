@@ -1,6 +1,7 @@
-  %-------------------- Visual Stimulation FrameWork ---------------------%
+%-------------------- Visual Stimulation FrameWork ---------------------%
 clear all
 close all
+clc
 oldEnableFlag = Screen('Preference', 'SuppressAllWarnings', 1);
 %% Initializationtion Routines
   %---------- Set Paths ----------%
@@ -34,18 +35,24 @@ oldEnableFlag = Screen('Preference', 'SuppressAllWarnings', 1);
 	AssertOpenGL; 	% Make sure this is running on OpenGL Psychtoolbox
 	
 	%---------- Screen Initialization ----------%
-	GreyLevel = 128;
+	GreyLevel = 125;
 	screenid = max(Screen('Screens')); % Choose screen with maximum id - secondary display on a dual-display.
-	[window,rect] = Screen('OpenWindow', screenid, GreyLevel);
+	[window,rect]= Screen('OpenWindow', screenid, GreyLevel);
 	[sparams.screenWidth, sparams.screenHeight]=Screen('WindowSize', screenid);	
 	sparams.black=BlackIndex(window);
 	sparams.white=WhiteIndex(window);
   sparams.rect = rect; 
   sparams.screenid = screenid; 
 	sparams.ifi = Screen('GetFlipInterval', window);   
-  sparams.deg2pixel = 70/sparams.screenHeight;           % Need to Set Independantly for Each Setup!!!!
-  sparams.pixel2deg = 1/sparams.deg2pixel;
-
+  sparams.xdeg2pixel = 125/sparams.screenWidth;           % Need to Set Independantly for Each Setup!!!!
+  sparams.ydeg2pixel = 70/sparams.screenHeight;           % Need to Set Independantly for Each Setup!!!!
+  sparams.pixel2deg = 1/sparams.ydeg2pixel;
+  %load gammaTable        
+  global gt
+  gt = load('gammatable2_n17.mat');             
+  Screen('LoadNormalizedGammaTable', window, gt.gammaTable2*[1 1 1]);        
+        
+  
 	%---------- KeyBoard Inputs ----------%
 	kc_q = KbName('q');	% Quit
 	kc_b = KbName('b');	% Toggle Bullseye 
@@ -97,11 +104,17 @@ clear('StimLog','vparams','filename')
 	
 		case 'Spot'
 			StimLog = ShowSpot(window,vparams,sparams);		      
-      %save '/media/nerffs01/Data/StimLog/StimLog' StimLog;
+      file_date = ['/home/farrowlab/StimLog/StimLog',datestr(now,['yyyy','mm','dd'])];
+      mkdir(file_date);
+      file_Stim = [file_date,'/Spot']
+      mkdir(file_Stim);
       
     case 'FullField'
       StimLog = ShowFull(window,vparams,sparams);  
-      %save '/media/nerffs01/Data/StimLog/StimLog' StimLog;
+      file_date = ['/home/farrowlab/StimLog/StimLog',datestr(now,['yyyy','mm','dd'])];
+      mkdir(file_date);
+      file_Stim = [file_date,'/FullField']
+      mkdir(file_Stim);
       
 		case 'Grating'      
       StimLog = ShowGrating(window,vparams,sparams);
@@ -122,11 +135,15 @@ clear('StimLog','vparams','filename')
       #save '/media/nerffs01/Data/StimLog/StimLog' StimLog;
       
 		case 'Noise'
-    fdisp(stdout,'Picking Noise Stimuli.');       
-    sparams.dontclear = 0;
-    StimLog = PickNoise(window,vparams,sparams);
-%    save '/media/nerffs01/Data/StimLog/StimLog' StimLog;
-    assignin('base','StimLog',StimLog);
+      fdisp(stdout,'Picking Noise Stimuli.');       
+      sparams.dontclear = 0;
+      StimLog = PickNoise(window,vparams,sparams);
+%     save '/media/nerffs01/Data/StimLog/StimLog' StimLog;
+      assignin('base','StimLog',StimLog);
+      file_date = ['/home/farrowlab/StimLog/StimLog',datestr(now,['yyyy','mm','dd'])];
+      mkdir(file_date);
+      file_Stim = [file_date,'/Noise']
+      mkdir(file_Stim);
     
     case 'Moving Bar'      
       StimLog = ShowMovingBar(window,vparams,sparams); 
@@ -155,19 +172,54 @@ clear('StimLog','vparams','filename')
       file_Stim = [file_date,'/FlashingBar']
       mkdir(file_Stim);
       
-%      %Check if files have already been created
-%      dum = dir(file_Stim);
-%      if size(dum,1) > 2
-%      CounterFlashingBar = str2num(dum(end).name) +1;      
-%      else
-%      CounterFlashingBar = 1;
-%      end
-%      filename = [file_Stim,'/',num2str(CounterFlashingBar)];
-%      CounterFlashingBar = CounterFlashingBar+1;
-      %save '/home/farrowlab/Desktop/StimLog/StimLog' StimLog;
-      %save '/media/nerffs01/Data/StimLog/StimLog' StimLog;
-            
-      otherwise
+    
+    case 'Expanding Circle'
+      
+      StimLog = ShowExpandingCircle(window,vparams,sparams);
+      file_date = ['/home/farrowlab/StimLog/StimLog',datestr(now,['yyyy','mm','dd'])];
+      mkdir(file_date);
+      file_Stim = [file_date,'/ExpandingCircle']
+      mkdir(file_Stim);
+      
+    
+    case 'Expanding Checkerboard'
+      
+      StimLog = ShowExpandingCheckerboard(window,vparams,sparams);
+      file_date = ['/home/farrowlab/StimLog/StimLog',datestr(now,['yyyy','mm','dd'])];
+      mkdir(file_date);
+      file_Stim = [file_date,'/ExpandingCheckerboard']
+      mkdir(file_Stim);
+    
+    
+    case 'Translating Expanding Circle'
+      
+      StimLog = ShowTranslatingExpandingCircle(window,vparams,sparams);
+      file_date = ['/home/farrowlab/StimLog/StimLog',datestr(now,['yyyy','mm','dd'])];
+      mkdir(file_date);
+      file_Stim = [file_date,'/TranslatingExpandingCircle']
+      mkdir(file_Stim);
+
+    
+    case 'Translating Expanding Checkerboard'
+      
+      StimLog = ShowTranslatingExpandingCheckerboard(window,vparams,sparams);
+      file_date = ['/home/farrowlab/StimLog/StimLog',datestr(now,['yyyy','mm','dd'])];
+      mkdir(file_date);
+      file_Stim = [file_date,'/TranslatingExpandingCheckerboard']
+      mkdir(file_Stim);
+      
+    
+    case 'Flashing Grid Square'
+      
+      StimLog = ShowFlashingGridSquare(window,vparams,sparams);
+      file_date = ['/home/farrowlab/StimLog/StimLog',datestr(now,['yyyy','mm','dd'])];
+      mkdir(file_date);
+      file_Stim = [file_date,'/FlashingGridSquare']
+      mkdir(file_Stim);
+    
+    
+      
+    otherwise
 	if ~isempty(VStim)
          	fdisp(stdout,'Stimulus Not Programed Correctly');
         end
