@@ -11,11 +11,14 @@ InitiateTTLPulses;
 Parameters = fieldnames(vparams);
 
 % Degree to pixel conversion factor
-d2p = 1/sparams.ydeg2pixel;
+xd2p = 1/sparams.xdeg2pixel;
+yd2p = 1/sparams.ydeg2pixel;
 
 % size parameters
-startsize = (vparams.StartSize*d2p)/2; % divided by 2 for radius
-stopsize = (vparams.StopSize*d2p)/2; % divided by 2 for radius
+xstartsize = (vparams.StartSize*xd2p);
+ystartsize = (vparams.StartSize*yd2p);
+xstopsize = (vparams.StopSize*xd2p);
+ystopsize = (vparams.StopSize*yd2p);
 
 % luminance parameter
 lum = vparams.StimLum;
@@ -27,7 +30,7 @@ framerate = 1/sparams.ifi;
 ISI = vparams.ISI;
 
 % speed list
-speedlist = vparams.Speed*d2p/2; % divided by 2 for radius
+speedlist = vparams.Speed*yd2p;
 
 % number of trail
 trial = vparams.Trial;
@@ -84,20 +87,23 @@ for k = 1:trial
   for j = 1:size(randspeedlist,2)
     
     speed = randspeedlist(j);
-    StimLog.Stim(k).Stim(j).StimSpeed = speed/d2p*2; % Log speed
+    StimLog.Stim(k).Stim(j).StimSpeed = speed/yd2p; % Log speed
         
-    timeofstim = abs((stopsize-startsize)/speed);    
+    timeofstim = abs((ystopsize-ystartsize)/speed);    
     nframes = (framerate*timeofstim);
     assignin('base','timeofstim',timeofstim)
     assignin('base','nframes',nframes);
     
     % Generate size list
-    if (startsize < stopsize) % expanding
-      sizelist = linspace(startsize,stopsize,nframes);
-    elseif (startsize > stopsize) % receding
-      sizelist = linspace(startsize,stopsize,nframes);
-    elseif (startsize == stopsize) % the same size
-      sizelist = startsize*ones(1,nframes);
+    if (ystartsize < ystopsize) % expanding
+      xsizelist = linspace(xstartsize,xstopsize,nframes);
+      ysizelist = linspace(ystartsize,ystopsize,nframes);
+    elseif (ystartsize > ystopsize) % receding
+      xsizelist = linspace(xstartsize,xstopsize,nframes);
+      ysizelist = linspace(ystartsize,ystopsize,nframes);
+    elseif (ystartsize == ystopsize) % the same size
+      xsizelist = xstartsize*ones(1,nframes);
+      ysizelist = ystartsize*ones(1,nframes);
     endif
       
     % Send TTL pulse timestamp
@@ -107,8 +113,9 @@ for k = 1:trial
       
     for i = 1:nframes    
       % Draw the rect to the screen
-      Screen('gluDisk', window, [lum lum lum], xCenter, yCenter, sizelist(i));
-      %Screen('gluDisk', window, lumChange, xCenter, yCenter, stopsize);
+      dstRect = [0 0 xsizelist(i) ysizelist(i)];
+      dstRect = CenterRectOnPointd(dstRect, xCenter, yCenter);
+      Screen('FillOval', window, [lum lum lum], dstRect);
       
       % Flip to the screen
       vbl  = Screen('Flip', window, vbl + 0.5 * sparams.ifi);

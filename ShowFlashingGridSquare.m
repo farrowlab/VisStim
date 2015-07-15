@@ -102,8 +102,8 @@ for l = 1:trial
             dstRect = [0 0 xsize ysize];
             dstRect = CenterRectOnPointd(dstRect, xCenterGrid, yCenterGrid);
             % Draw the rect to the screen
-            Screen('FillRect', window, [lum lum lum], dstRect); 
-
+            Screen('FillRect', window, [lum lum lum], dstRect);
+            
             % Flip to the screen
             vbl  = Screen('Flip', window, vbl + 0.5 * sparams.ifi);
 
@@ -111,11 +111,10 @@ for l = 1:trial
             time = time + sparams.ifi;
       
             % Send TTL pulse timestamp
-            TTLfunction(framebit,recbit);
-
+            TTLfunction(framebit,recbit);         
+          
           endfor
 
-  
         % Send TTL pulse timestamp
         TTLfunction(stimbit,recbit);
         StimLog.Stim(l).Stim(k).Stim(j).TimeOFF = GetSecs - StimLog.BeginTime; % Log TimeOFF

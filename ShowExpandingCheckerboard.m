@@ -11,11 +11,14 @@ InitiateTTLPulses;
 Parameters = fieldnames(vparams);
 
 % Degree to pixel conversion factor
-d2p = 1/sparams.ydeg2pixel;
+xd2p = 1/sparams.xdeg2pixel;
+yd2p = 1/sparams.ydeg2pixel;
 
 % size parameters
-startsize = (vparams.StartSize*d2p);
-stopsize = (vparams.StopSize*d2p);
+xstartsize = (vparams.StartSize*xd2p);
+ystartsize = (vparams.StartSize*yd2p);
+xstopsize = (vparams.StopSize*xd2p);
+ystopsize = (vparams.StopSize*yd2p);
 
 % framerate
 framerate = 1/sparams.ifi;
@@ -24,7 +27,7 @@ framerate = 1/sparams.ifi;
 ISI = vparams.ISI;
 
 % speed list
-speedlist = vparams.Speed*d2p;
+speedlist = vparams.Speed*yd2p;
 
 % number of trail
 trial = vparams.Trial;
@@ -96,18 +99,21 @@ for k = 1:trial
   for j = 1:size(randspeedlist,2)
     
     speed = randspeedlist(j);
-    StimLog.Stim(k).Stim(j).Speed = speed/d2p*2; % Log speed
+    StimLog.Stim(k).Stim(j).Speed = speed/yd2p; % Log speed
     
-    timeofstim = abs((stopsize-startsize)/speed);    
+    timeofstim = abs((ystopsize-ystartsize)/speed);    
     nframes = (framerate*timeofstim);
   
     % Generate size list
-    if (startsize < stopsize) % expanding
-      sizelist = linspace(startsize,stopsize,nframes);
-    elseif (startsize > stopsize) % receding
-      sizelist = linspace(startsize,stopsize,nframes);
-    elseif (startsize == stopsize) % the same size
-      sizelist = startsize*ones(1,nframes);
+    if (ystartsize < ystopsize) % expanding
+      xsizelist = linspace(xstartsize,xstopsize,nframes);
+      ysizelist = linspace(ystartsize,ystopsize,nframes);
+    elseif (ystartsize > ystopsize) % receding
+      xsizelist = linspace(xstartsize,xstopsize,nframes);
+      ysizelist = linspace(ystartsize,ystopsize,nframes);
+    elseif (ystartsize == ystopsize) % the same size
+      xsizelist = xstartsize*ones(1,nframes);
+      ysizelist = ystartsize*ones(1,nframes);
     endif
     
     % Send TTL pulse timestamp
@@ -118,7 +124,7 @@ for k = 1:trial
       
     for i = 1:nframes           
       % Center checkerboard
-      dstRect = [0 0 sizelist(i) sizelist(i)];
+      dstRect = [0 0 xsizelist(i) ysizelist(i)];
       dstRect = CenterRectOnPointd(dstRect, xCenter, yCenter);   
       % Draw the checkerboard texture to the screen.
       Screen('DrawTexture', window, checkerTexture, [], dstRect, [], filterMode);
