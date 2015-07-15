@@ -69,7 +69,8 @@ StimLog.Angle = vparams.Angle;
 StimLog.StartSize = vparams.StartSize; 
 StimLog.StopSize = vparams.StopSize;
 StimLog.StimLum = vparams.StimLum;
-
+StimLog.Xcenter = vparams.Xpos;
+StimLog.Ycenter = vparams.Ypos;
 
 
 % ----------------------- %

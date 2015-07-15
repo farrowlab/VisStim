@@ -45,7 +45,8 @@ StimLog.BgColor = 125; % BgColor
 StimLog.Speed = vparams.Speed;
 StimLog.StartSize = vparams.StartSize; 
 StimLog.StopSize = vparams.StopSize;
-
+StimLog.Xcenter = vparams.Xpos;
+StimLog.Ycenter = vparams.Ypos;
 
 
 % ----------------------- %
