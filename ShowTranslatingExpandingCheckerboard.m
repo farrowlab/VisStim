@@ -60,7 +60,7 @@ endif
 % ---------------------- %
 % --- Log parameters --- %
 StimLog.StimulusClass = 'Translating Expanding Circle';   
-StimLog.BgColor = 125; % BgColor
+StimLog.BgColor = vparams.BgColour; % BgColor
 StimLog.Speed = vparams.Speed;
 StimLog.Angle = vparams.Angle;
 StimLog.StartSize = vparams.StartSize; 

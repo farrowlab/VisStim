@@ -41,7 +41,7 @@ yCenter = vparams.Ypos;
 % ---------------------- %
 % --- Log parameters --- %
 StimLog.StimulusClass = 'Expanding Checkerboard';   
-StimLog.BgColor = 125; % BgColor
+StimLog.BgColor = vparams.BgColour; % BgColor
 StimLog.Speed = vparams.Speed;
 StimLog.StartSize = vparams.StartSize; 
 StimLog.StopSize = vparams.StopSize;

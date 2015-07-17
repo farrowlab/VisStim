@@ -50,7 +50,7 @@ yCenterlist = linspace(0+(ysize/2),sparams.rect(4)-(ysize/2),yGrid+1);
 % ---------------------- %
 % --- Log parameters --- %
 StimLog.StimulusClass = 'Flashing Grid Square';   
-StimLog.BgColor = 125; % BgColor
+StimLog.BgColor = vparams.BgColour; % BgColor
 StimLog.Duration = vparams.Duration;
 StimLog.Size = vparams.Size;
 StimLog.StimLum = vparams.StimLum;

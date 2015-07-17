@@ -1,4 +1,4 @@
-function StimLog = ShowTranslatingExpandingCirclefromCenter(window, vparams, sparams)
+function StimLog = ShowTranslatingCircle(window, vparams, sparams)
 
 % ------------------------- %
 % --- Initiate TTLpulse --- %
@@ -15,10 +15,8 @@ xd2p = 1/sparams.xdeg2pixel;
 yd2p = 1/sparams.ydeg2pixel;
 
 % size parameters
-xstartsize = (vparams.StartSize*xd2p);
-ystartsize = (vparams.StartSize*yd2p);
-xstopsize = (vparams.StopSize*xd2p);
-ystopsize = (vparams.StopSize*yd2p);
+xsize = (vparams.Size*xd2p);
+ysize = (vparams.Size*yd2p);
 
 % luminance parameters
 lum = vparams.StimLum;
@@ -42,32 +40,25 @@ trial = vparams.Trial;
 xCenter = vparams.Xpos;
 yCenter = vparams.Ypos;
 
+% fixed size parameters for nframes calculation
+xstartsize = (1*xd2p);
+ystartsize = (1*yd2p);
+xstopsize = (60*xd2p);
+ystopsize = (60*yd2p);
 % Calculate number of frames (nframes)
 timeofstim = abs((ystopsize-ystartsize)/speedofsize);    
 nframes = (framerate*timeofstim);
 
-% Generate size list
-if (ystartsize < ystopsize) % expanding
-   xsizelist = linspace(xstartsize,xstopsize,nframes);
-   ysizelist = linspace(ystartsize,ystopsize,nframes);
-elseif (ystartsize > ystopsize) % receding
-   xsizelist = linspace(xstartsize,xstopsize,nframes);
-   ysizelist = linspace(ystartsize,ystopsize,nframes);
-elseif (ystartsize == ystopsize) % the same size
-   xsizelist = xstartsize*ones(1,nframes);
-   ysizelist = ystartsize*ones(1,nframes);
-endif
 
 
 
 % ---------------------- %
 % --- Log parameters --- %
-StimLog.StimulusClass = 'Translating Expanding Circle from Center';   
+StimLog.StimulusClass = 'Translating Circle';   
 StimLog.BgColor = vparams.BgColour; % BgColor
 StimLog.Speed = vparams.Speed;
 StimLog.Angle = vparams.Angle;
-StimLog.StartSize = vparams.StartSize; 
-StimLog.StopSize = vparams.StopSize;
+StimLog.Size = vparams.Size;
 StimLog.StimLum = vparams.StimLum;
 StimLog.Xcenter = vparams.Xpos;
 StimLog.Ycenter = vparams.Ypos;
@@ -134,29 +125,29 @@ for k = 1:trial
   
     % Generate position list
     if  (angle == 0) % Horizontal axis, backward translation (angle 0)   
-      xCenterlist = linspace(xCenter,sparams.rect(3),nframes);
+      xCenterlist = linspace(0,sparams.rect(3),nframes);
       yCenterlist = yCenter*ones(1,nframes);
     elseif (angle == 180) % Horizontal axis, forward translation (angle 180)
-      xCenterlist = linspace(xCenter,0,nframes);
+      xCenterlist = linspace(sparams.rect(3),0,nframes);
       yCenterlist = yCenter*ones(1,nframes);
     elseif (angle == 270) % Vertical axis, downward translation (angle 270)
       xCenterlist = xCenter*ones(1,nframes);
-      yCenterlist = linspace(yCenter,sparams.rect(4),nframes);
+      yCenterlist = linspace(0,sparams.rect(4),nframes);
     elseif (angle == 90) % Vertical axis, upward translation (angle 90)
       xCenterlist = xCenter*ones(1,nframes);
-      yCenterlist = linspace(yCenter,0,nframes);
+      yCenterlist = linspace(sparams.rect(4),0,nframes);
     elseif  (angle == 315) % Diagonal axis, downbackward (angle 315)
-      xCenterlist = linspace(xCenter,xmax,nframes);
-      yCenterlist = linspace(yCenter,ymax,nframes);
+      xCenterlist = linspace(xzero,xmax,nframes);
+      yCenterlist = linspace(yzero,ymax,nframes);
     elseif  (angle == 135) % Diagonal axis, upforward (angle 135)
-      xCenterlist = linspace(xCenter,xzero,nframes);
-      yCenterlist = linspace(yCenter,yzero,nframes);
+      xCenterlist = linspace(xmax,xzero,nframes);
+      yCenterlist = linspace(ymax,yzero,nframes);
     elseif  (angle == 45) % Diagonal axis,  upbackward (angle 45)
-      xCenterlist = linspace(xCenter,xmax,nframes);
-      yCenterlist = linspace(yCenter,yzero,nframes);
+      xCenterlist = linspace(xzero,xmax,nframes);
+      yCenterlist = linspace(ymax,yzero,nframes);
     elseif  (angle == 225) % Diagonal axis, downforward (angle 225)
-      xCenterlist = linspace(xCenter,xzero,nframes);
-      yCenterlist = linspace(yCenter,ymax,nframes);
+      xCenterlist = linspace(xmax,xzero,nframes);
+      yCenterlist = linspace(yzero,ymax,nframes);
     elseif  (angle == -1) % Depth axis
       xCenterlist = xCenter*ones(1,nframes);
       yCenterlist = yCenter*ones(1,nframes);
@@ -170,7 +161,7 @@ for k = 1:trial
  
     for  i = 1:nframes    
       % Draw the rect to the screen
-      dstRect = [0 0 xsizelist(i) ysizelist(i)];
+      dstRect = [0 0 xsize ysize];
       dstRect = CenterRectOnPointd(dstRect, xCenterlist(i), yCenterlist(i));
       Screen('FillOval', window, [lum lum lum], dstRect);
 

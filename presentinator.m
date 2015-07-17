@@ -244,6 +244,16 @@ clear('StimLog','vparams','filename')
       file_Stim = [file_date,'/FlashingCircle']
       mkdir(file_Stim); 
     
+    
+    case 'Translating Circle'
+      
+      StimLog = ShowTranslatingCircle(window,vparams,sparams);
+      file_date = ['/home/farrowlab/StimLog/StimLog',datestr(now,['yyyy','mm','dd'])];
+      mkdir(file_date);
+      file_Stim = [file_date,'/TranslatingCircle']
+      mkdir(file_Stim);
+      
+    
     otherwise
 	if ~isempty(VStim)
          	fdisp(stdout,'Stimulus Not Programed Correctly');
