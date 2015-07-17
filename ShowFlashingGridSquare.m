@@ -31,9 +31,6 @@ ISI = vparams.ISI;
 % number of trail
 trial = vparams.Trial;
 
-% Center position
-xCenter = vparams.Xpos;
-yCenter = vparams.Ypos;
 
 % Calculate number of frames (nframes)
 timeofstim = vparams.Duration;
