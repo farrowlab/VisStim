@@ -50,8 +50,8 @@ StimLog.Speed = vparams.Speed;
 StimLog.Angle = vparams.Angle;
 StimLog.Size = vparams.Size;
 StimLog.StimLum = vparams.StimLum;
-StimLog.Xcenter = vparams.Xpos;
-StimLog.Ycenter = vparams.Ypos;
+StimLog.Xpos = vparams.Xpos;
+StimLog.Ypos = vparams.Ypos;
 StimLog.ISI = vparams.ISI;
 StimLog.Trail = vparams.Trial;
 
