@@ -132,19 +132,34 @@ for k = 1:trial
       ymax = sparams.rect(4) + ydiff;
     endif  
   
+   % Calculate lenghth for diagonal axis
+    dialenghth = sqrt((sparams.rect(3))^2+(sparams.rect(4)^2));
+    % Calculate difference of lenghth in diagonal axis and horizontal axis
+    diahordiff = dialenghth - sparams.rect(3);
+    % Calculate difference of lenghth in diagonal axis and vertical axis
+    diaverdiff = dialenghth - sparams.rect(4);
+    % Calculate position range for horizontal axis
+    hxzero = 0 - (diahordiff/2);
+    hxmax = sparams.rect(3) + (diahordiff/2);
+    % Calculate position range for vertical axis
+    vyzero = 0 - (diaverdiff/2);
+    vymax = sparams.rect(4) + (diaverdiff/2);
+
+    
+    
     % Generate position list
     if  (angle == 0) % Horizontal axis, backward translation (angle 0)   
-      xCenterlist = linspace(0,sparams.rect(3),nframes);
+      xCenterlist = linspace(hxzero,hxmax,nframes);
       yCenterlist = yCenter*ones(1,nframes);
     elseif (angle == 180) % Horizontal axis, forward translation (angle 180)
-      xCenterlist = linspace(sparams.rect(3),0,nframes);
+      xCenterlist = linspace(hxmax,hxzero,nframes);
       yCenterlist = yCenter*ones(1,nframes);
     elseif (angle == 270) % Vertical axis, downward translation (angle 270)
       xCenterlist = xCenter*ones(1,nframes);
-      yCenterlist = linspace(0,sparams.rect(4),nframes);
+      yCenterlist = linspace(vyzero,vymax,nframes);
     elseif (angle == 90) % Vertical axis, upward translation (angle 90)
       xCenterlist = xCenter*ones(1,nframes);
-      yCenterlist = linspace(sparams.rect(4),0,nframes);
+      yCenterlist = linspace(vymax,vyzero,nframes);
     elseif  (angle == 315) % Diagonal axis, downbackward (angle 315)
       xCenterlist = linspace(xzero,xmax,nframes);
       yCenterlist = linspace(yzero,ymax,nframes);

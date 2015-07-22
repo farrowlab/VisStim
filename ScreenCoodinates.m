@@ -63,7 +63,7 @@ while ~KbCheck
 
 
     % Draw a white dot where the mouse cursor is
-    Screen('DrawDots', window, [x y], 73, white, [], 2);
+    Screen('DrawDots', window, [x y], 140, white, [], 2);
 
     % Flip to the screen
     Screen('Flip', window);
