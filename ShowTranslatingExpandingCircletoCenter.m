@@ -42,21 +42,6 @@ trial = vparams.Trial;
 xCenter = vparams.Xpos;
 yCenter = vparams.Ypos;
 
-% Calculate number of frames (nframes)
-timeofstim = abs((ystopsize-ystartsize)/speedofsize);    
-nframes = (framerate*timeofstim);
-
-% Generate size list
-if (ystartsize < ystopsize) % expanding
-   xsizelist = linspace(xstartsize,xstopsize,nframes);
-   ysizelist = linspace(ystartsize,ystopsize,nframes);
-elseif (ystartsize > ystopsize) % receding
-   xsizelist = linspace(xstartsize,xstopsize,nframes);
-   ysizelist = linspace(ystartsize,ystopsize,nframes);
-elseif (ystartsize == ystopsize) % the same size
-   xsizelist = xstartsize*ones(1,nframes);
-   ysizelist = ystartsize*ones(1,nframes);
-endif
 
 
 
@@ -69,8 +54,10 @@ StimLog.Angle = vparams.Angle;
 StimLog.StartSize = vparams.StartSize; 
 StimLog.StopSize = vparams.StopSize;
 StimLog.StimLum = vparams.StimLum;
-StimLog.Xcenter = vparams.Xpos;
-StimLog.Ycenter = vparams.Ypos;
+StimLog.Xpos = vparams.Xpos;
+StimLog.Ypos = vparams.Ypos;
+StimLog.ISI = vparams.ISI;
+StimLog.Trail = vparams.Trial;
 
 
 
@@ -98,6 +85,28 @@ Priority(topPriorityLevel);
 
 
 
+% ------------------- %
+% --- Calculation --- %
+% Calculate translating path, default is the half length of diagonal axis
+diaglength = (sqrt((sparams.screenWidth)^2+(sparams.screenHeight)^2))/2;
+% Calculate number of frames (nframes)
+timeofstim = diaglength/speedofsize;  % if speed is 30 deg/s, time is 1.8676 s  
+nframes = (framerate*timeofstim);
+% Generate size list
+if (ystartsize < ystopsize) % expanding
+   xsizelist = linspace(xstartsize,xstopsize,nframes);
+   ysizelist = linspace(ystartsize,ystopsize,nframes);
+elseif (ystartsize > ystopsize) % receding
+   xsizelist = linspace(xstartsize,xstopsize,nframes);
+   ysizelist = linspace(ystartsize,ystopsize,nframes);
+elseif (ystartsize == ystopsize) % the same size
+   xsizelist = xstartsize*ones(1,nframes);
+   ysizelist = ystartsize*ones(1,nframes);
+endif
+
+
+
+
 % ------------------------ %
 % --- Present stimulus --- %
 for k = 1:trial
@@ -109,55 +118,32 @@ for k = 1:trial
     angle = randanglelist(j);
     StimLog.Stim(k).Stim(j).Angle = angle; % Log angle
   
-    % Calculate position range for dianogal axis
-    xzero = 0;
-    xmax = sparams.rect(3);
-    yzero = 0;
-    ymax = sparams.rect(4);
-    xdiff = abs(xWindowCenter - xCenter);
-    ydiff = abs(yWindowCenter - yCenter);
-  
-    if (xCenter < xWindowCenter)
-      xzero = 0 - xdiff;
-      xmax = sparams.rect(3) - xdiff;
-    elseif (xCenter > xWindowCenter)
-      xzero = 0 + xdiff;
-      xmax = sparams.rect(3) + xdiff;
-    endif
-  
-    if (yCenter < yWindowCenter)
-      yzero = 0 - ydiff;
-      ymax = sparams.rect(4) - ydiff;
-    elseif (yCenter > yWindowCenter)
-      yzero = 0 + ydiff;
-      ymax = sparams.rect(4) + ydiff;
-    endif  
   
     % Generate position list
-    if  (angle == 0) % Horizontal axis, backward translation (angle 0)   
-      xCenterlist = linspace(0,xCenter,nframes);
+    if  (angle == 0) % Horizontal axis, backward translation (angle 0)       
+      xCenterlist = linspace((xCenter-diaglength),xCenter,nframes);
       yCenterlist = yCenter*ones(1,nframes);
     elseif (angle == 180) % Horizontal axis, forward translation (angle 180)
-      xCenterlist = linspace(sparams.rect(3),xCenter,nframes);
+      xCenterlist = linspace((xCenter+diaglength),xCenter,nframes);
       yCenterlist = yCenter*ones(1,nframes);
     elseif (angle == 270) % Vertical axis, downward translation (angle 270)
       xCenterlist = xCenter*ones(1,nframes);
-      yCenterlist = linspace(0,yCenter,nframes);
+      yCenterlist = linspace((yCenter-diaglength),yCenter,nframes);
     elseif (angle == 90) % Vertical axis, upward translation (angle 90)
       xCenterlist = xCenter*ones(1,nframes);
-      yCenterlist = linspace(sparams.rect(4),yCenter,nframes);
+      yCenterlist = linspace((yCenter+diaglength),yCenter,nframes);
     elseif  (angle == 315) % Diagonal axis, downbackward (angle 315)
-      xCenterlist = linspace(xzero,xCenter,nframes);
-      yCenterlist = linspace(yzero,yCenter,nframes);
+      xCenterlist = linspace((xCenter-(diaglength/sqrt(2))),xCenter,nframes);
+      yCenterlist = linspace((yCenter-(diaglength/sqrt(2))),yCenter,nframes);
     elseif  (angle == 135) % Diagonal axis, upforward (angle 135)
-      xCenterlist = linspace(xmax,xCenter,nframes);
-      yCenterlist = linspace(ymax,yCenter,nframes);
+      xCenterlist = linspace((xCenter+(diaglength/sqrt(2))),xCenter,nframes);
+      yCenterlist = linspace((yCenter+(diaglength/sqrt(2))),yCenter,nframes);
     elseif  (angle == 45) % Diagonal axis,  upbackward (angle 45)
-      xCenterlist = linspace(xzero,xCenter,nframes);
-      yCenterlist = linspace(ymax,yCenter,nframes);
+      xCenterlist = linspace((xCenter-(diaglength/sqrt(2))),xCenter,nframes);
+      yCenterlist = linspace((yCenter+(diaglength/sqrt(2))),yCenter,nframes);
     elseif  (angle == 225) % Diagonal axis, downforward (angle 225)
-      xCenterlist = linspace(xmax,xCenter,nframes);
-      yCenterlist = linspace(yzero,yCenter,nframes);
+      xCenterlist = linspace((xCenter+(diaglength/sqrt(2))),xCenter,nframes);
+      yCenterlist = linspace((yCenter-(diaglength/sqrt(2))),yCenter,nframes);
     elseif  (angle == -1) % Depth axis
       xCenterlist = xCenter*ones(1,nframes);
       yCenterlist = yCenter*ones(1,nframes);
