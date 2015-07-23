@@ -25,29 +25,18 @@ def buildPresentinatorString(pars,options):
 
 def main():
     # default inputs
-    ntrials = 5
-    pars = [['Class','Grating',''],
-            ['Type','Stationary',''],
-            ['Size',[0.2],'Size of grating'],
-            ['Shape','Sine','Shape of sine'],
-            ['Angle',[0],'Angle of grating'],
-            ['Order','Forward','Sequence Order'],
-            ['Repeats',1,'Number of repetitions'],
-            ['TemporalFreq',8,'Temporal Frequency'],
-            ['BlankTime',1,'Time of blank stim after recording trigger'],
-            ['PreTime',1,'Time before stim'],
-            ['PostTime',1,'Time after stim'],
-            ['StimTime',1,'Stim duration'],
-            ['InterStimTime',5,'Time between stimuli'],
-            ['StimContrast',1,'Stimulus contrast'],
+    pars = [['Class','Flashing Grid Square',''],
+            ['Type','Single',''],
+            ['Size',[5],'Size of square'],
+            ['Trial',1,'Number of trail'],
+            ['Duration',[0.5],'Duration'],
+            ['ISI',1,'Time between stimuli'],
+            ['StimLum',0,'Luminance'],
+            ['Xpos',[640],'x position of stim center'],
+            ['Ypos',[512],'y position of stim center'],
             ['BgColour','125 125 125','Background color']]
     # Add parameters
     parser = ArgumentParser(add_help=True)
-    # For the number of trials
-    parser.add_argument('-n','--ntrials',
-                        dest='ntrials',action='store',
-                        default=ntrials,
-                        help = 'Number of trials' + '\033[93m'+ '(Default: {0})'.format(ntrials)+'\033[0m')
     parser.add_argument('-V','--voltage-clamp',
                         dest='VC',action='store_true',
                         default=False,
@@ -74,7 +63,7 @@ def main():
     opts = parser.parse_args()
     options = vars(opts)
     presentCmd = buildPresentinatorString(pars,options)
-    stimMessage = "Class:Grating;Type:Stationary;Size:_0.1;Shape:Sine;Angle:_0;Order:Forward;Repeats:1;TemporalFreq:8;BlankTime:1;PreTime:1;PostTime:1;StimTime:1;InterStimTime:5;StimContrast:1;BgColour:125 125 125;!!!"
+    stimMessage = "Class:FlashingGridSquare;Type:Single;Size:_5;Trial:1;Duration:_0.5;ISI:1;StimLum:1;Xpos:640;Ypos:512;BgColour:125 125 125"
     sock = socket.socket(socket.AF_INET,
                          socket.SOCK_DGRAM) # Open UDP connection
     
@@ -82,7 +71,7 @@ def main():
     if opts.VC:
         extra_opts +='-V'
         print('Recording in voltage clamp!')
-    for ii in range(int(options['ntrials'])):
+    for ii in range(int(1)):
         filename = time.strftime('%Y%m%d%H%M%S')+'.h5'
         oldfiles = glob('*.h5')
         print("Setting up recording.")
@@ -108,7 +97,7 @@ def main():
                     print('Writing to {0}'.format(f))
                     break
         else:
-            duration = float(opts.StimTime)+float(opts.PreTime)+float(opts.PostTime)+float(opts.BlankTime)+float(opts.InterStimTime)
+            duration = float(opts.ISI)
             time.sleep(duration)
 
 if  __name__ == '__main__':

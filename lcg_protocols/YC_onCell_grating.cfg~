@@ -1,0 +1,74 @@
+[Experiment Folder Parameters]
+foldername = 
+pattern = YYYYMMDD_YC_onCell_grating_[001]
+subfolders = spontaneous,steps,tau
+
+
+[Experiment Information File]
+experimenter = Ya-Chien
+project = YC_SC_patch
+mouse line = C57BL/6J
+mouse age = 5w
+mouse tag = Y001
+cortex = intact
+pipette resistance = 4
+pipette capacitance compensation = 0
+cell tag = 1
+cell type = unknown
+cell depth = 1300
+search depth = 1000
+targeting pressure (mbar)= 1000
+hunting pressure (mbar) = 30
+patching pressure (mbar) = -20
+
+
+
+
+
+[Grating Size0.5 Protocol]
+name = Grating Protocol
+command = record-grating --Type 'Stationary' --Size 1.02 --Shape 'Sine' --Angle '0 45 90 135 180 225 270 315' --Order Forward --Repeats 1 --TemporalFreq 2 --BlankTime 2 --PreTime 2 --PostTime 2 --StimTime 2 --InterStimTime 2 --StimContrast 1 --BgColour '127 127 127' --ntrials {0} {1}
+parameters = ntrial,mode(-V for VC)  
+defaults = 1,-V
+foldername = gratingSize0.5
+
+
+
+
+
+[Grating Size1 Protocol]
+name = Grating Protocol
+command = record-grating --Type 'Stationary' --Size 0.51 --Shape 'Sine' --Angle '0 45 90 135 180 225 270 315' --Order Forward --Repeats 1 --TemporalFreq 2 --BlankTime 2 --PreTime 2 --PostTime 2 --StimTime 2 --InterStimTime 2 --StimContrast 1 --BgColour '127 127 127' --ntrials {0} {1}
+parameters = ntrial,mode(-V for VC)  
+defaults = 1,-V
+foldername = gratingSize1
+
+
+
+
+[Grating Size2.5 Protocol]
+name = Grating Protocol
+command = record-grating --Type 'Stationary' --Size 0.204 --Shape 'Sine' --Angle '0 45 90 135 180 225 270 315' --Order Forward --Repeats 1 --TemporalFreq 2 --BlankTime 2 --PreTime 2 --PostTime 2 --StimTime 2 --InterStimTime 2 --StimContrast 1 --BgColour '127 127 127' --ntrials {0} {1}
+parameters = ntrial,mode(-V for VC)  
+defaults = 1,-V
+foldername = gratingSize2.5
+
+
+
+
+[Grating Size5 Protocol]
+name = Grating Protocol
+command = record-grating --Type 'Stationary' --Size 0.102 --Shape 'Sine' --Angle '0 45 90 135 180 225 270 315' --Order Forward --Repeats 1 --TemporalFreq 2 --BlankTime 2 --PreTime 2 --PostTime 2 --StimTime 2 --InterStimTime 2 --StimContrast 1 --BgColour '127 127 127' --ntrials {0} {1}
+parameters = ntrial,mode(-V for VC)  
+defaults = 1,-V
+foldername = gratingSize5
+
+
+
+
+[Grating Size10 Protocol]
+name = Grating Protocol
+command = record-grating --Type 'Stationary' --Size 0.051 --Shape 'Sine' --Angle '0 45 90 135 180 225 270 315' --Order Forward --Repeats 1 --TemporalFreq 2 --BlankTime 2 --PreTime 2 --PostTime 2 --StimTime 2 --InterStimTime 2 --StimContrast 1 --BgColour '127 127 127' --ntrials {0} {1}
+parameters = ntrial,mode(-V for VC)  
+defaults = 1,-V
+foldername = gratingSize10

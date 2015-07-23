@@ -1,6 +1,5 @@
 <lcg>
   <simulation>
-    <outfile>20150616223712.h5</outfile>
     <rate>10000.0</rate>
     <tend>10000.0</tend>
     <trigger>
@@ -14,7 +13,6 @@
       <id>0</id>
       <parameters>
         <compress>True</compress>
-        <filename>20150616223712.h5</filename>
       </parameters>
     </entity>
     <entity>
