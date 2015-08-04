@@ -37,11 +37,16 @@ timeofstim = vparams.Duration;
 nframes = (framerate*timeofstim);
 
 % Generate position list
-xGrid = (sparams.rect(3)/xsize);
-yGrid = (sparams.rect(4)/ysize);
-xCenterlist = linspace(0+(xsize/2),sparams.rect(3)-(xsize/2),xGrid+1);
-yCenterlist = linspace(0+(ysize/2),sparams.rect(4)-(ysize/2),yGrid+1);
-
+switch vparams.Grid
+    case 'Whole'  % whole screen
+      xGrid = (sparams.rect(3)/xsize);
+      yGrid = (sparams.rect(4)/ysize);
+      xCenterlist = linspace(0+(xsize/2),sparams.rect(3)-(xsize/2),xGrid+1);
+      yCenterlist = linspace(0+(ysize/2),sparams.rect(4)-(ysize/2),yGrid+1);
+    case 'Center' % center of screen
+      xCenterlist = [((sparams.rect(3)/2)-(xsize)),(sparams.rect(3)/2),((sparams.rect(3)/2)+(xsize))];
+      yCenterlist = [((sparams.rect(4)/2)-(ysize)),(sparams.rect(4)/2),((sparams.rect(4)/2)+(ysize))];
+end  
 
 
 % ---------------------- %
