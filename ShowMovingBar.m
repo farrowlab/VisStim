@@ -46,14 +46,14 @@ nangles = length(vparams.Angle);
   end
   
   
-  % ----- Display Blank screen for BlankTime-----%
+  % ----- Display Blank screen for InterStimTime-----%
   %TIME = GetSecs;
   parallelTTLstartstop(sparams.paralellport,recbit);
   TTLfunction(startbit,recbit);
-  StimLog.BlankTime = GetSecs - StimLog.BeginTime;
-  WaitSecs(vparams.BlankTime)
-  %WaitSecs(TIME + vparams.BlankTime - GetSecs);
-  %TIME = TIME + vparams.BlankTime;
+  StimLog.InterStimTime = GetSecs - StimLog.BeginTime;
+  WaitSecs(vparams.InterStimTime)
+  %WaitSecs(TIME + vparams.InterStimTime - GetSecs);
+  %TIME = TIME + vparams.InterStimTime;
   
   
   %----- Initiate Screen -----%
@@ -141,9 +141,9 @@ for a = 1:nangles
       % Log in
       TTLfunction(stimbit,recbit);
       TTLfunction(framebit,recbit);
-      StimLog.Angle(a).Stim(i).PreTime = GetSecs - StimLog.BeginTime;  % TimeON    
+      StimLog.Angle(a).Stim(i).InterStimTime = GetSecs - StimLog.BeginTime;  % TimeON    
 %      for j = 1:5; srl_write(sparams.serialport,'0'); end
-	    WaitSecs(vparams.PreTime); 
+	    WaitSecs(vparams.InterStimTime); 
   
     
     %----- Move bar -----%
@@ -212,10 +212,10 @@ for a = 1:nangles
 %	  for j = 1:5; srl_write(sparams.serialport,'0'); end
   
     %----- Post Stimulus Pause -----%
-    WaitSecs(vparams.PostTime); 
+    WaitSecs(vparams.InterStimTime); 
     TTLfunction(stimbit,recbit);
     StimLog.EndTime = GetSecs - StimLog.BeginTime;
-    WaitSecs(vparams.BlankTime);
+    WaitSecs(vparams.InterStimTime);
     TTLfunction(stopbit,0);
 %    for j = 1:5; srl_write(sparams.serialport,'0'); end
 

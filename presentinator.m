@@ -263,6 +263,15 @@ clear('StimLog','vparams','filename')
       mkdir(file_Stim);
       
     
+    case 'Translating Bar'
+      
+      StimLog = ShowTranslatingBar(window,vparams,sparams);
+      file_date = ['/home/farrowlab/StimLog/StimLog',datestr(now,['yyyy','mm','dd'])];
+      mkdir(file_date);
+      file_Stim = [file_date,'/TranslatingBar']
+      mkdir(file_Stim);
+      
+    
     otherwise
 	if ~isempty(VStim)
          	fdisp(stdout,'Stimulus Not Programed Correctly');
