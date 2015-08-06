@@ -1,0 +1,2 @@
+#!/bin/bash
+lcg-experiment -V 3 -c triggered_stimulus.xml -r 0

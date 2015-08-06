@@ -28,7 +28,9 @@ def main():
     ntrials = 5
     pars = [['Class','Spot',''],
             ['Type','Single',''],
-            ['Size',[100],'Size of spot'],
+            ['StartSize',[2],'StartSize of spot'],
+            ['StopSize',[60],'StopSize of spot'],
+            ['Velocity',[40],'Velocity of size changing']
             ['Shape','Spot','Shape of spot'],
             ['Order','Forward','Sequence'],
             ['Repeats',1,'Number of repetitions'],
@@ -50,6 +52,10 @@ def main():
                         dest='VC',action='store_true',
                         default=False,
                         help = 'Use voltage clamp \033[93m (Current clamp by default))\033[0m')
+    parser.add_argument('--no-record',
+                        dest='record',action='store_false',
+                        default=True,
+                        help = 'Do not run LCG (no record) \033[93m (Record by default))\033[0m')
 
     for par in pars:
         if par[0] is list:
@@ -68,7 +74,7 @@ def main():
     opts = parser.parse_args()
     options = vars(opts)
     presentCmd = buildPresentinatorString(pars,options)
-    stimMessage = "Class:Spot;Type:Single;Size:_5;Shape:Spot;Order:Forward;Repeats:1;PreTime:1;PostTime:1;StimTime:10;InterStimTime:5;StimColour:50;BgColour:125 125 125;!!!"
+    stimMessage = "Class:Spot;Type:Single;StartSize:_2;StopSize:_60;Velocity:_40;Shape:Spot;Order:Forward;Repeats:1;PreTime:1;PostTime:1;StimTime:10;InterStimTime:5;StimColour:50;BgColour:125 125 125;!!!"
     sock = socket.socket(socket.AF_INET,
                          socket.SOCK_DGRAM) # Open UDP connection
     extra_opts = ''
@@ -83,21 +89,27 @@ def main():
         string = 'lcg-stimulus-external-trigger --trigger-subdevice 2 --trigger-channel 3 -l 10000 -O none --digital-channels 0,1,2 --trigger-stop-channel 4 --dry-run {0} {1}'.format(extra_opts,'-o '+filename)
 #        string = 'lcg-stimulus-external-trigger --trigger-subdevice 2 --trigger-channel 3 -l 10000 -O none --digital-channels 0,1,2 --trigger-stop-channel 4 --dry-run {0}'.format(extra_opts)
         # Runs the stim file
-        drun = sub.Popen(string,shell=True,stdout = sub.PIPE)
-        proc = sub.Popen(drun.stdout.read(),shell=True)
-        time.sleep(0.1)
-        presentCmd = presentCmd[:-3] + 'Filename:' + filename + ';!!!'
-        print('Presenting string: {0}'.format(presentCmd))
-        sock.sendto(presentCmd, (remoteIP, remotePort))
-        proc.communicate()
-        # For the annotation
-        files = glob('*.h5')
-        for f in files:
-            if not f in oldfiles:
-                sub.call('lcg-annotate -m "{1}" {0}'.format(f,stimMessage)
-                         ,shell=True)
-                print('Writing to {0}'.format(f))
+        if opts.record:
+            drun = sub.Popen(string,shell=True,stdout = sub.PIPE)
+            proc = sub.Popen(drun.stdout.read(),shell=True)
+            time.sleep(0.1)
+        presentCmdFname = presentCmd[:-3] + 'Filename:' + filename + ';!!!'
+        print('Presenting string: {0}'.format(presentCmdFname))
+        sock.sendto(presentCmdFname, (remoteIP, remotePort))
+        if opts.record:
+            proc.communicate()
+            # For the annotation
+            files = glob('*.h5')
+            for f in files:
+                if not f in oldfiles:
+                    sub.call('lcg-annotate -m "{1}" {0}'.format(f,stimMessage)
+                             ,shell=True)
+                    print('Writing to {0}'.format(f))
 
-                break
+                    break
+        else:
+            duration = float(opts.StimTime)+float(opts.PreTime)+float(opts.PostTime)+float(opts.BlankTime)+float(opts.InterStimTime)
+            time.sleep(duration)
+
 if  __name__ == '__main__':
-    ()
+    main()

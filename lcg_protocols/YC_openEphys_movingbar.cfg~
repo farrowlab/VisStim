@@ -25,7 +25,7 @@ patching pressure (mbar) = -20
 
 [MovingBar DS size1 Protocol]
 name = MovingBar Protocol
-command = record-movingbar --Type 'Single' --Size 1 --Angle '0 45 90 135 180 225 270 315' --Order Forward --Repeats 1 --Speed 40 --BlankTime 0 --PreTime 3 --PostTime 3 --InterStimTime 0 --StimColor 255 --BgColour '127 127 127' --ntrials {0} {1}
+command = record-movingbar --Type 'Single' --Size 1 --Angle '0 45 90 135 180 225 270 315' --Order Forward --Repeats 1 --Speed 40 --BlankTime 1 --PreTime 2 --PostTime 1 --InterStimTime 0 --StimColor 255 --BgColour '127 127 127' --ntrials {0} {1}
 parameters = ntrials,mode(-V for VC)
 defaults = 5,-V
 foldername = movingbarSize1
@@ -34,7 +34,7 @@ foldername = movingbarSize1
 
 [MovingBar DS size2.5 Protocol]
 name = MovingBar Protocol
-command = record-movingbar --Type 'Single' --Size 2.5 --Angle '0 45 90 135 180 225 270 315' --Order Forward --Repeats 1 --Speed 40 --BlankTime 0 --PreTime 3 --PostTime 3 --InterStimTime 0 --StimColor 255 --BgColour '127 127 127' --ntrials {0} {1}
+command = record-movingbar --Type 'Single' --Size 2.5 --Angle '0 45 90 135 180 225 270 315' --Order Forward --Repeats 1 --Speed 40 --BlankTime 1 --PreTime 2 --PostTime 1 --InterStimTime 0 --StimColor 255 --BgColour '127 127 127' --ntrials {0} {1}
 parameters = ntrials,mode(-V for VC)
 defaults = 5,-V
 foldername = movingbarSize2.5
@@ -43,7 +43,7 @@ foldername = movingbarSize2.5
 
 [MovingBar DS size5 Protocol]
 name = MovingBar Protocol
-command = record-movingbar --Type 'Single' --Size 5 --Angle '0 45 90 135 180 225 270 315' --Order Forward --Repeats 1 --Speed 40 --BlankTime 0 --PreTime 3 --PostTime 3 --InterStimTime 0 --StimColor 255 --BgColour '127 127 127' --ntrials {0} {1}
+command = record-movingbar --Type 'Single' --Size 5 --Angle '0 45 90 135 180 225 270 315' --Order Forward --Repeats 1 --Speed 40 --BlankTime 1 --PreTime 2 --PostTime 1 --InterStimTime 0 --StimColor 255 --BgColour '127 127 127' --ntrials {0} {1}
 parameters = ntrials,mode(-V for VC)
 defaults = 5,-V
 foldername = movingbarSize5
@@ -52,7 +52,7 @@ foldername = movingbarSize5
 
 [MovingBar DS size10 Protocol]
 name = MovingBar Protocol
-command = record-movingbar --Type 'Single' --Size 10 --Angle '0 45 90 135 180 225 270 315' --Order Forward --Repeats 1 --Speed 40 --BlankTime 0 --PreTime 3 --PostTime 3 --InterStimTime 0 --StimColor 255 --BgColour '127 127 127' --ntrials {0} {1}
+command = record-movingbar --Type 'Single' --Size 10 --Angle '0 45 90 135 180 225 270 315' --Order Forward --Repeats 1 --Speed 40 --BlankTime 1 --PreTime 2 --PostTime 1 --InterStimTime 0 --StimColor 255 --BgColour '127 127 127' --ntrials {0} {1}
 parameters = ntrials,mode(-V for VC)
 defaults = 5,-V
 foldername = movingbarSize10
@@ -61,7 +61,7 @@ foldername = movingbarSize10
 
 [MovingBar Size dir0 Protocol]
 name = MovingBar Protocol
-command = record-movingbar --Type 'Single' --Size '1 2 4 16 32 64' --Angle 0 --Order Forward --Repeats 1 --Speed 40 --BlankTime 0 --PreTime 2 --PostTime 1 --InterStimTime 0 --StimColor 255 --BgColour '127 127 127' --ntrials {0} {1} 
+command = record-movingbar --Type 'Single' --Size '1 2 4 16 32 64' --Angle 0 --Order Forward --Repeats 1 --Speed 40 --BlankTime 1 --PreTime 2 --PostTime 1 --InterStimTime 0 --StimColor 255 --BgColour '127 127 127' --ntrials {0} {1} 
 parameters = ntrials,mode(-V for VC)
 defaults = 5,-V
 foldername = movingbarDir0
@@ -70,7 +70,7 @@ foldername = movingbarDir0
 
 [MovingBar Size dir90 Protocol]
 name = MovingBar Protocol
-command = record-movingbar --Type 'Single' --Size '1 2 4 16 32 64' --Angle 90 --Order Forward --Repeats 1 --Speed 40 --BlankTime 0 --PreTime 2 --PostTime 1 --InterStimTime 0 --StimColor 255 --BgColour '127 127 127' --ntrials {0} {1}
+command = record-movingbar --Type 'Single' --Size '1 2 4 16 32 64' --Angle 90 --Order Forward --Repeats 1 --Speed 40 --BlankTime 1 --PreTime 2 --PostTime 1 --InterStimTime 0 --StimColor 255 --BgColour '127 127 127' --ntrials {0} {1}
 parameters = ntrials,mode(-V for VC)
 defaults = 5,-V
 foldername = movingbarDir90
@@ -79,7 +79,7 @@ foldername = movingbarDir90
 
 [MovingBar Speed size1 dir0 Protocol]
 name = MovingBar Protocol
-command = record-movingbar --Type 'Single' --Size 1 --Angle 0 --Order Forward --Repeats 1 --Speed '10 20 40 80 160 320' --BlankTime 0 --PreTime 2 --PostTime 1 --InterStimTime 0 --StimColor 255 --BgColour '127 127 127' --ntrials {0} {1}
+command = record-movingbar --Type 'Single' --Size 1 --Angle 0 --Order Forward --Repeats 1 --Speed '10 20 40 80 160 320' --BlankTime 1 --PreTime 2 --PostTime 1 --InterStimTime 0 --StimColor 255 --BgColour '127 127 127' --ntrials {0} {1}
 parameters = ntrials,mode(-V for VC)
 defaults = 5,-V
 foldername = movingbarSize1Dir0
@@ -88,7 +88,7 @@ foldername = movingbarSize1Dir0
 
 [MovingBar Speed size1 dir90 Protocol]
 name = MovingBar Protocol
-command = record-movingbar --Type 'Single' --Size 1 --Angle 90 --Order Forward --Repeats 1 --Speed '10 20 40 80 160 320' --BlankTime 0 --PreTime 2 --PostTime 1 --InterStimTime 0 --StimColor 255 --BgColour '127 127 127' --ntrials {0} {1}
+command = record-movingbar --Type 'Single' --Size 1 --Angle 90 --Order Forward --Repeats 1 --Speed '10 20 40 80 160 320' --BlankTime 1 --PreTime 2 --PostTime 1 --InterStimTime 0 --StimColor 255 --BgColour '127 127 127' --ntrials {0} {1}
 parameters = ntrials,mode(-V for VC)
 defaults = 5,-V
 foldername = movingbarSize1Dir90
@@ -97,7 +97,7 @@ foldername = movingbarSize1Dir90
 
 [MovingBar Speed size2.5 dir0 Protocol]
 name = MovingBar Protocol
-command = record-movingbar --Type 'Single' --Size 2.5 --Angle 0 --Order Forward --Repeats 1 --Speed '10 20 40 80 160 320' --BlankTime 0 --PreTime 2 --PostTime 1 --InterStimTime 0 --StimColor 255 --BgColour '127 127 127' --ntrials {0} {1}
+command = record-movingbar --Type 'Single' --Size 2.5 --Angle 0 --Order Forward --Repeats 1 --Speed '10 20 40 80 160 320' --BlankTime 1 --PreTime 2 --PostTime 1 --InterStimTime 0 --StimColor 255 --BgColour '127 127 127' --ntrials {0} {1}
 parameters = ntrials,mode(-V for VC)
 defaults = 5,-V
 foldername = movingbarSize2.5Dir0
@@ -107,7 +107,7 @@ foldername = movingbarSize2.5Dir0
 
 [MovingBar Speed size2.5 dir0 Protocol]
 name = MovingBar Protocol
-command = record-movingbar --Type 'Single' --Size 2.5 --Angle 0 --Order Forward --Repeats 1 --Speed '10 20 40 80 160 320' --BlankTime 0 --PreTime 2 --PostTime 1 --InterStimTime 0 --StimColor 255 --BgColour '127 127 127' --ntrials {0} {1}
+command = record-movingbar --Type 'Single' --Size 2.5 --Angle 0 --Order Forward --Repeats 1 --Speed '10 20 40 80 160 320' --BlankTime 1 --PreTime 2 --PostTime 1 --InterStimTime 0 --StimColor 255 --BgColour '127 127 127' --ntrials {0} {1}
 parameters = ntrials,mode(-V for VC)
 defaults = 5,-V
 foldername = movingbarSize2.5Dir0
@@ -116,7 +116,7 @@ foldername = movingbarSize2.5Dir0
 
 [MovingBar Speed size5 dir0 Protocol]
 name = MovingBar Protocol
-command = record-movingbar --Type 'Single' --Size 5 --Angle 0 --Order Forward --Repeats 1 --Speed '10 20 40 80 160 320' --BlankTime 0 --PreTime 2 --PostTime 1 --InterStimTime 0 --StimColor 255 --BgColour '127 127 127' --ntrials {0} {1}
+command = record-movingbar --Type 'Single' --Size 5 --Angle 0 --Order Forward --Repeats 1 --Speed '10 20 40 80 160 320' --BlankTime 1 --PreTime 2 --PostTime 1 --InterStimTime 0 --StimColor 255 --BgColour '127 127 127' --ntrials {0} {1}
 parameters = ntrials,mode(-V for VC)
 defaults = 5,-V
 foldername = movingbarSize5Dir0
@@ -124,7 +124,7 @@ foldername = movingbarSize5Dir0
 
 [MovingBar Speed size5 dir90 Protocol]
 name = MovingBar Protocol
-command = record-movingbar --Type 'Single' --Size 5 --Angle 90 --Order Forward --Repeats 1 --Speed '10 20 40 80 160 320' --BlankTime 0 --PreTime 2 --PostTime 1 --InterStimTime 0 --StimColor 255 --BgColour '127 127 127' --ntrials {0} {1}
+command = record-movingbar --Type 'Single' --Size 5 --Angle 90 --Order Forward --Repeats 1 --Speed '10 20 40 80 160 320' --BlankTime 1 --PreTime 2 --PostTime 1 --InterStimTime 0 --StimColor 255 --BgColour '127 127 127' --ntrials {0} {1}
 parameters = ntrials,mode(-V for VC)
 defaults = 5,-V
 foldername = movingbarSize5Dir90
@@ -133,7 +133,7 @@ foldername = movingbarSize5Dir90
 
 [MovingBar Speed size10 dir0 Protocol]
 name = MovingBar Protocol
-command = record-movingbar --Type 'Single' --Size 10 --Angle 0 --Order Forward --Repeats 1 --Speed '10 20 40 80 160 320' --BlankTime 0 --PreTime 2 --PostTime 1 --InterStimTime 0 --StimColor 255 --BgColour '127 127 127' --ntrials {0} {1}
+command = record-movingbar --Type 'Single' --Size 10 --Angle 0 --Order Forward --Repeats 1 --Speed '10 20 40 80 160 320' --BlankTime 1 --PreTime 2 --PostTime 1 --InterStimTime 0 --StimColor 255 --BgColour '127 127 127' --ntrials {0} {1}
 parameters = ntrials,mode(-V for VC)
 defaults = 5,-V
 foldername = movingbarSize10Dir0
@@ -142,7 +142,7 @@ foldername = movingbarSize10Dir0
 
 [MovingBar Speed size10 dir90 Protocol]
 name = MovingBar Protocol
-command = record-movingbar --Type 'Single' --Size 10 --Angle 90 --Order Forward --Repeats 1 --Speed '10 20 40 80 160 320' --BlankTime 0 --PreTime 2 --PostTime 1 --InterStimTime 0 --StimColor 255 --BgColour '127 127 127' --ntrials {0} {1}
+command = record-movingbar --Type 'Single' --Size 10 --Angle 90 --Order Forward --Repeats 1 --Speed '10 20 40 80 160 320' --BlankTime 1 --PreTime 2 --PostTime 1 --InterStimTime 0 --StimColor 255 --BgColour '127 127 127' --ntrials {0} {1}
 parameters = ntrials,mode(-V for VC)
 defaults = 5,-V
 foldername = movingbarSize10Dir90
@@ -152,7 +152,7 @@ foldername = movingbarSize10Dir90
 
 [MovingBar white DS size2.5 speed20 Protocol]
 name = MovingBar Protocol
-command = record-movingbar --Type 'Single' --Size 2.5 --Angle '0 90' --Order Forward --Repeats 1 --Speed 20 --BlankTime 0 --PreTime 2 --PostTime 1 --InterStimTime 0 --StimColor 255 --BgColour '127 127 127' --ntrials {0} {1}
+command = record-movingbar --Type 'Single' --Size 2.5 --Angle '0 90' --Order Forward --Repeats 1 --Speed 20 --BlankTime 1 --PreTime 2 --PostTime 1 --InterStimTime 0 --StimColor 255 --BgColour '127 127 127' --ntrials {0} {1}
 parameters = ntrials,mode(-V for VC)
 defaults = 5,-V
 foldername = movingbarWhiteSize2.5Speed20
@@ -226,24 +226,3 @@ command = record-movingbar --Type 'Single' --Size 10 --Angle '0 90' --Order Forw
 parameters = ntrials,mode(-V for VC)
 defaults = 5,-V
 foldername = movingbarBlackSize10Speed80
-
-
-
-
-
-[Spontaneous Protocol]
-name = Spontaneous Protocol
-command = lcg-spontaneous -d {0} -n {1} -i {2} {3}
-parameters = Duration(s),Repeat,ISI(s),mode(-V for VC)
-defaults = 10,1,0,-V
-foldername = spontaneous
-
-
-
-
-[Electroporation Protocol]
-name = Electroporation Protocol
-command = lcg-stimgen square --plus -d {0} -- {1} {2} {3} dc -M -d {0} -- {1}  dc -d {0} -E -- 0.5 | lcg-stimulus
-parameters = Duration(s),Amp(pA),Freq,DutyCycle
-defaults = 60,500,2,50
-foldername = electroporation

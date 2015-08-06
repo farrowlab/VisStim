@@ -7,6 +7,7 @@ from ipdb import set_trace
 from glob import glob
 remoteIP = '10.86.1.107'
 remotePort = 1214
+import ipdb
 
 def buildPresentinatorString(pars,options):
     string = ''
@@ -50,6 +51,10 @@ def main():
                         dest='VC',action='store_true',
                         default=False,
                         help = 'Use voltage clamp \033[93m (Current clamp by default))\033[0m')
+    parser.add_argument('--no-record',
+                        dest='record',action='store_false',
+                        default=True,
+                        help = 'Do not run LCG (no record) \033[93m (Record by default))\033[0m')
 
     for par in pars:
         if par[0] is list:
@@ -79,25 +84,31 @@ def main():
     for ii in range(int(options['ntrials'])):
         filename = time.strftime('%Y%m%d%H%M%S')+'.h5'
         oldfiles = glob('*.h5')
-        print("Setting up recording.")
+        print("Setting up rec1ording.")
         # Create the stimulus file using the dry-run option
         #string = 'lcg-stimulus-external-trigger --trigger-subdevice 2 --trigger-channel 3 -l 10000 -O none --digital-channels 0,1,2 --trigger-stop-channel 4 --dry-run {0}'.format(extra_opts)
         string = 'lcg-stimulus-external-trigger --trigger-subdevice 2 --trigger-channel 3 -l 10000 -O none --digital-channels 0,1,2 --trigger-stop-channel 4 --dry-run {0} {1}'.format(extra_opts,'-o '+filename)
         # Runs the stim file
-        drun = sub.Popen(string,shell=True,stdout = sub.PIPE)
-        proc = sub.Popen(drun.stdout.read(),shell=True)
-        time.sleep(0.1)
-        presentCmd = presentCmd[:-3] + 'Filename:' + filename + ';!!!'
-        print('Presenting string: {0}'.format(presentCmd))
-        sock.sendto(presentCmd, (remoteIP, remotePort))
-        proc.communicate()    
-        # For the annotation
-        files = glob('*.h5')
-        for f in files:
-            if not f in oldfiles:
-                sub.call('lcg-annotate -m "{1}" {0}'.format(f,stimMessage)
-                    ,shell=True)
-                print('Writing to {0}'.format(f))
-                break
+        if opts.record:
+            drun = sub.Popen(string,shell=True,stdout = sub.PIPE)
+            proc = sub.Popen(drun.stdout.read(),shell=True)
+            time.sleep(0.1)
+        presentCmdFname = presentCmd[:-3] + 'Filename:' + filename + ';!!!'
+        print('Presenting string: {0}'.format(presentCmdFname))
+        sock.sendto(presentCmdFname, (remoteIP, remotePort))
+        if opts.record:
+            proc.communicate()
+            # For the annotation
+            files = glob('*.h5')
+            for f in files:
+                if not f in oldfiles:
+                    sub.call('lcg-annotate -m "{1}" {0}'.format(f,stimMessage)
+                             ,shell=True)
+                    print('Writing to {0}'.format(f))
+                    break
+        else:
+            duration = (float(opts.Size) + 400)/float(opts.Speed)
+            time.sleep(duration)
+
 if  __name__ == '__main__':
     main()
