@@ -27,6 +27,7 @@ def main():
     # default inputs
     pars = [['Class','Flashing Grid Square',''],
             ['Type','Single',''],
+            ['Grid','Whole',''],
             ['Size',[5],'Size of square'],
             ['Trial',1,'Number of trail'],
             ['Duration',[0.5],'Duration'],
@@ -61,7 +62,7 @@ def main():
     opts = parser.parse_args()
     options = vars(opts)
     presentCmd = buildPresentinatorString(pars,options)
-    stimMessage = "Class:FlashingGridSquare;Type:Single;Size:_5;Trial:1;Duration:_0.5;ISI:1;StimLum:1;BgColour:125 125 125"
+    stimMessage = "Class:FlashingGridSquare;Type:Single;Grid:Whole;Size:_5;Trial:1;Duration:_0.5;ISI:1;StimLum:1;BgColour:125 125 125"
     sock = socket.socket(socket.AF_INET,
                          socket.SOCK_DGRAM) # Open UDP connection
     
