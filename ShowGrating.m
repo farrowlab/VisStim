@@ -23,8 +23,8 @@ function StimLog = ShowGrating(window, vparams, sparams)
     radius=inf;
     NFrames = ceil(vparams.StimTime/ifi);
     BgColour = vparams.BgColour;  
-    Contrast = vparams.Contrast; 
-    cyclespersecond = vparams.TempFreq;
+    Contrast = vparams.StimContrast; 
+    cyclespersecond = vparams.TemporalFreq;
     cpd = vparams.SpatFreq * sparams.deg2pixel;   % Frequency of the grating in cycles per pixel.   sparams.pixel2deg
     
     %--- Change Between Sweeps ---%
