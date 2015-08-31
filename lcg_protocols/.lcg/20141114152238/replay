@@ -1,0 +1,2 @@
+#!/bin/bash
+lcg-experiment -c spontaneous.xml -V 4 -r 0
