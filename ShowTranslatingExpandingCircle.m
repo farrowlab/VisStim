@@ -112,7 +112,8 @@ endif
 % --- Present stimulus --- %
 for k = 1:trial
   
-  randanglelist = anglelist(randperm(size(anglelist,2))); % randomize the sequence of angle list
+  %randanglelist = anglelist(randperm(size(anglelist,2))); % randomize the sequence of angle list
+  randanglelist = anglelist;
 
   for  j = 1:size(randanglelist,2) 
   

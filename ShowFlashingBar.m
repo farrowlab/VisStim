@@ -5,7 +5,7 @@ function StimLog = ShowFlashingBar(window,vparams,sparams);
   vparams.Repeats = 1;
 
   %-----------------  Make Parameter List  ---------------%
-  [p, q] = meshgrid(vparams.BarWidths,vparams.ONColor);
+  [p, q] = meshgrid(vparams.Size,vparams.StimColor);
   StimList = [p(:) q(:)]; % Create a complete stimulus List where each row is a stimulus [Size, Colour]
   StimList = repmat(StimList,[vparams.Repeats,1]);
   NStim = size(StimList,1);  
@@ -13,7 +13,6 @@ function StimLog = ShowFlashingBar(window,vparams,sparams);
 
   %-----------------  Initiate Screen  -------------------%
   parallelTTLstartstop(sparams.paralellport,recbit);
-  TTLfunction(startca,recbit); WaitSecs(.1); 
   TTLfunction(startbit,recbit); WaitSecs(.1); 
   StimLog.BeginTime = GetSecs; 
   Screen('FillRect', window, vparams.BgColour)
@@ -24,7 +23,7 @@ function StimLog = ShowFlashingBar(window,vparams,sparams);
   StimLog.StimulusClass = 'Flashing Bar';   
    
   %-----------------  Initiate ---------------------------%
-  nangles = vparams.NAngles;
+  nangles = vparams.Angle;
   dangle = round(180/nangles);
   vparams.Angle = 0:dangle:179;
   

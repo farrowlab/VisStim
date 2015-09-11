@@ -1,4 +1,4 @@
-function StimLog = ShowExpandingCircle(window, vparams, sparams)
+function StimLog = ShowExpandingRecedingCircle(window, vparams, sparams)
 
 % ------------------------- %
 % --- Initiate TTLpulse --- %
@@ -15,16 +15,16 @@ xd2p = 1/sparams.xdeg2pixel;
 yd2p = 1/sparams.ydeg2pixel;
 
 % size parameters
-xstartsize = (vparams.StartSize*xd2p);
-ystartsize = (vparams.StartSize*yd2p);
-xstopsize = (vparams.StopSize*xd2p);
-ystopsize = (vparams.StopSize*yd2p);
+xsmallsize = (vparams.SmallSize*xd2p);
+ysmallsize = (vparams.SmallSize*yd2p);
+xbigsize = (vparams.BigSize*xd2p);
+ybigsize = (vparams.BigSize*yd2p);
 
 % luminance parameter
 lum = vparams.StimLum;
 
 % framerate
-framerate = 1/sparams.ifi;
+framerate = round(1/sparams.ifi);
 
 % Inter-stimulus interval
 ISI = vparams.ISI;
@@ -43,11 +43,11 @@ yCenter = vparams.Ypos;
 
 % ---------------------- %
 % --- Log parameters --- %
-StimLog.StimulusClass = 'Expanding Circle';   
+StimLog.StimulusClass = 'Expanding Receding Circle';   
 StimLog.BgColor = vparams.BgColour; % BgColor
 StimLog.Speed = vparams.Speed;
-StimLog.StartSize = vparams.StartSize; 
-StimLog.StopSize = vparams.StopSize;
+StimLog.SmallSize = vparams.SmallSize; 
+StimLog.BigSize = vparams.BigSize;
 StimLog.StimLum = vparams.StimLum;
 StimLog.Xpos = vparams.Xpos;
 StimLog.Ypos = vparams.Ypos;
@@ -84,40 +84,79 @@ Priority(topPriorityLevel);
 % --- Present stimulus --- %
 for k = 1:trial
   
-  %randspeedlist = speedlist(randperm(size(speedlist,2))); % randomize the sequence of speed list
-  randspeedlist = speedlist;
-  
   % Calculate number of frames (nframes)
-  for j = 1:size(randspeedlist,2)
+  for j = 1:size(speedlist,2)
     
-    speed = randspeedlist(j);
+    speed = speedlist(j);
     StimLog.Stim(k).Stim(j).StimSpeed = speed/yd2p; % Log speed
         
-    timeofstim = abs((ystopsize-ystartsize)/speed);    
-    nframes = (framerate*timeofstim);
+    timeofstim = abs((ybigsize-ysmallsize)/speed);    
+    nframes = round(framerate*timeofstim);
     assignin('base','timeofstim',timeofstim)
     assignin('base','nframes',nframes);
     
     % Generate size list
-    if (ystartsize < ystopsize) % expanding
-      xsizelist = linspace(xstartsize,xstopsize,nframes);
-      ysizelist = linspace(ystartsize,ystopsize,nframes);
-    elseif (ystartsize > ystopsize) % receding
-      xsizelist = linspace(xstartsize,xstopsize,nframes);
-      ysizelist = linspace(ystartsize,ystopsize,nframes);
-    elseif (ystartsize == ystopsize) % the same size
-      xsizelist = xstartsize*ones(1,nframes);
-      ysizelist = ystartsize*ones(1,nframes);
-    endif
+    % Expanding to bigsize
+    exp_xsizelist = linspace(xsmallsize,xbigsize,nframes);
+    exp_ysizelist = linspace(ysmallsize,ybigsize,nframes);
+    % Receding to small size
+    rec_xsizelist = linspace(xbigsize,xsmallsize,nframes);
+    rec_ysizelist = linspace(ybigsize,ysmallsize,nframes);
+    % Stay in bigsize
+    big_xsizelist = xbigsize*ones(1,framerate*5); % stay for 5 sec
+    big_ysizelist = ybigsize*ones(1,framerate*5); % stay for 5 sec
+      
       
     % Send TTL pulse timestamp
     TTLfunction(stimbit,recbit);
     TTLfunction(framebit,recbit);
     StimLog.Stim(k).Stim(j).TimeON = GetSecs - StimLog.BeginTime;  % Log TimeON
       
-    for i = 1:nframes    
+    % Expanding to bigsize
+    for i = 1:(nframes)    
       % Draw the rect to the screen
-      dstRect = [0 0 xsizelist(i) ysizelist(i)];
+      dstRect = [0 0 exp_xsizelist(i) exp_ysizelist(i)];
+      dstRect = CenterRectOnPointd(dstRect, xCenter, yCenter);
+      Screen('FillOval', window, [lum lum lum], dstRect);
+      
+      % Flip to the screen
+      vbl  = Screen('Flip', window, vbl + 0.5 * sparams.ifi);
+       
+      % Increment the time
+      time = time + sparams.ifi;
+      
+      % Send TTL pulse timestamp
+      TTLfunction(framebit,recbit);
+      
+    endfor
+    
+    % Send TTL pulse timestamp
+    TTLfunction(stimbit,recbit);
+    StimLog.Stim(k).Stim(j).Transition1 = GetSecs - StimLog.BeginTime; % Log Transition1
+    
+    % Stay in bigsize
+    for i = 1:(framerate*5)    
+      % Draw the rect to the screen
+      dstRect = [0 0 big_xsizelist(i) big_ysizelist(i)];
+      dstRect = CenterRectOnPointd(dstRect, xCenter, yCenter);
+      Screen('FillOval', window, [lum lum lum], dstRect);
+      
+      % Flip to the screen
+      vbl  = Screen('Flip', window, vbl + 0.5 * sparams.ifi);
+       
+      % Increment the time
+      time = time + sparams.ifi;
+      
+    endfor
+    
+    % Send TTL pulse timestamp
+    TTLfunction(stimbit,recbit);
+    StimLog.Stim(k).Stim(j).Transition2 = GetSecs - StimLog.BeginTime; % Log Transition2
+    
+    % Receding to small size
+    for i = 1:(nframes)    
+      % Draw the rect to the screen
+      dstRect = [0 0 rec_xsizelist(i) rec_ysizelist(i)];
       dstRect = CenterRectOnPointd(dstRect, xCenter, yCenter);
       Screen('FillOval', window, [lum lum lum], dstRect);
       

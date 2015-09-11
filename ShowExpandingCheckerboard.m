@@ -96,7 +96,8 @@ Priority(topPriorityLevel);
 % --- Present stimulus --- %
 for k = 1:trial
   
-  randspeedlist = speedlist(randperm(size(speedlist,2))); % randomize the sequence of speed list
+  %randspeedlist = speedlist(randperm(size(speedlist,2))); % randomize the sequence of speed list
+  randspeedlist = speedlist; 
 
   % Calculate number of frames (nframes)
   for j = 1:size(randspeedlist,2)

@@ -101,7 +101,8 @@ filterMode = 0;
 % --- Present stimulus --- %
 for k = 1:trial
   
-  randanglelist = anglelist(randperm(size(anglelist,2))); % randomize the sequence of angle list
+  %randanglelist = anglelist(randperm(size(anglelist,2))); % randomize the sequence of angle list
+  randanglelist = anglelist; 
   
   for l = 1:size(xsizelist,2)
       
@@ -109,10 +110,16 @@ for k = 1:trial
 
      % Calculate translating path, default is the half length of diagonal axis
      diaglength = (sqrt((sparams.screenWidth)^2+(sparams.screenHeight)^2))/2;
-     xtranspath = diaglength + (xsize*2);
-     ytranspath = diaglength + (xsize*2);
+     verticallength = sparams.screenHeight;
+     horizontallength = sparams.screenWidth;
+     dxtranspath = diaglength + (xsize/2);
+     dytranspath = diaglength + (xsize/2);
+     vxtranspath = diaglength + (xsize/2);
+     vytranspath = diaglength + (xsize/2);
+     hxtranspath = diaglength + (xsize/2);
+     hytranspath = diaglength + (xsize/2);
      % Calculate number of frames (nframes)
-     timeofstim = ytranspath*2/speed;  % if speed is 30 deg/s, time is 5.7352 s  
+     timeofstim = dytranspath*2/speed;  % if speed is 30 deg/s, time is 5.7352 s  
      nframes = (framerate*timeofstim);
     
     for  j = 1:size(randanglelist,2) 
@@ -123,29 +130,29 @@ for k = 1:trial
     
       % Generate position list
       if  (angle == 0) % Horizontal axis, backward translation (angle 0)       
-        xCenterlist = linspace((xCenter-xtranspath),(xCenter+xtranspath),nframes);
+        xCenterlist = linspace((xCenter-hxtranspath),(xCenter+hxtranspath),nframes);
         yCenterlist = yCenter*ones(1,nframes);
       elseif (angle == 180) % Horizontal axis, forward translation (angle 180)
-        xCenterlist = linspace((xCenter+xtranspath),(xCenter-xtranspath),nframes);
+        xCenterlist = linspace((xCenter+hxtranspath),(xCenter-hxtranspath),nframes);
         yCenterlist = yCenter*ones(1,nframes);
       elseif (angle == 270) % Vertical axis, downward translation (angle 270)
         xCenterlist = xCenter*ones(1,nframes);
-        yCenterlist = linspace((yCenter-ytranspath),(yCenter+ytranspath),nframes);
+        yCenterlist = linspace((yCenter-vytranspath),(yCenter+vytranspath),nframes);
       elseif (angle == 90) % Vertical axis, upward translation (angle 90)
         xCenterlist = xCenter*ones(1,nframes);
-        yCenterlist = linspace((yCenter+ytranspath),(yCenter-ytranspath),nframes);
+        yCenterlist = linspace((yCenter+vytranspath),(yCenter-vytranspath),nframes);
       elseif  (angle == 315) % Diagonal axis, downbackward (angle 315)
-        xCenterlist = linspace((xCenter-(xtranspath/sqrt(2))),(xCenter+(xtranspath/sqrt(2))),nframes);
-        yCenterlist = linspace((yCenter-(ytranspath/sqrt(2))),(yCenter+(ytranspath/sqrt(2))),nframes);
+        xCenterlist = linspace((xCenter-(dxtranspath/sqrt(2))),(xCenter+(dxtranspath/sqrt(2))),nframes);
+        yCenterlist = linspace((yCenter-(dytranspath/sqrt(2))),(yCenter+(dytranspath/sqrt(2))),nframes);
       elseif  (angle == 135) % Diagonal axis, upforward (angle 135)
-        xCenterlist = linspace((xCenter+(xtranspath/sqrt(2))),(xCenter-(xtranspath/sqrt(2))),nframes);
-        yCenterlist = linspace((yCenter+(ytranspath/sqrt(2))),(yCenter-(ytranspath/sqrt(2))),nframes);
+        xCenterlist = linspace((xCenter+(dxtranspath/sqrt(2))),(xCenter-(dxtranspath/sqrt(2))),nframes);
+        yCenterlist = linspace((yCenter+(dytranspath/sqrt(2))),(yCenter-(dytranspath/sqrt(2))),nframes);
       elseif  (angle == 45) % Diagonal axis,  upbackward (angle 45)
-        xCenterlist = linspace((xCenter-(xtranspath/sqrt(2))),(xCenter+(xtranspath/sqrt(2))),nframes);
-        yCenterlist = linspace((yCenter+(ytranspath/sqrt(2))),(yCenter-(ytranspath/sqrt(2))),nframes);
+        xCenterlist = linspace((xCenter-(dxtranspath/sqrt(2))),(xCenter+(dxtranspath/sqrt(2))),nframes);
+        yCenterlist = linspace((yCenter+(dytranspath/sqrt(2))),(yCenter-(dytranspath/sqrt(2))),nframes);
       elseif  (angle == 225) % Diagonal axis, downforward (angle 225)
-        xCenterlist = linspace((xCenter+(xtranspath/sqrt(2))),(xCenter-(xtranspath/sqrt(2))),nframes);
-        yCenterlist = linspace((yCenter-(ytranspath/sqrt(2))),(yCenter+(ytranspath/sqrt(2))),nframes);
+        xCenterlist = linspace((xCenter+(dxtranspath/sqrt(2))),(xCenter-(dxtranspath/sqrt(2))),nframes);
+        yCenterlist = linspace((yCenter-(dytranspath/sqrt(2))),(yCenter+(dytranspath/sqrt(2))),nframes);
       endif
        
       % Send TTL pulse timestamp
