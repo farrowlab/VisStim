@@ -39,8 +39,8 @@ nframes = (framerate*timeofstim);
 % Generate position list
 switch vparams.Grid
     case 'Whole'  % whole screen
-      xGrid = (sparams.rect(3)/xsize);
-      yGrid = (sparams.rect(4)/ysize);
+      xGrid = (sparams.rect(3)/xsize)*2;
+      yGrid = (sparams.rect(4)/ysize)*2;
       xCenterlist = linspace(0+(xsize/2),sparams.rect(3)-(xsize/2),xGrid+1);
       yCenterlist = linspace(0+(ysize/2),sparams.rect(4)-(ysize/2),yGrid+1);
     case 'Center' % center of screen

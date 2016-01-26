@@ -293,7 +293,7 @@ function [f,p,cvg,iter,corp,covp,covr,stdresid,Z,r2]= ...
   ## constraints also implemented. Olaf Till
   ## Now split into files leasqr.m and __lm_svd__.m.
 
-  __plot_cmds__ (); # flag persistent variables invalid
+%  __plot_cmds__ (); # flag persistent variables invalid
 
   global verbose;
 

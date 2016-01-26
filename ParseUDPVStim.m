@@ -387,32 +387,32 @@ function [VStim P] = ParseUDPVStim(udp);
 	          S = regexp(udp, ';Filename:','end')+1;
             E = sc(find(sc > S,1,'first'))-1;            
             P.Filename = udp(S:E);                                    
-          case 'Size'
-            S = regexp(udp, ';Size:','end')+1;
+          case 'BarWidths'
+            S = regexp(udp, ';BarWidths:','end')+1;
             E = sc(find(sc > S,1,'first'))-1;            
             SS = udp(S:E)
             idx = regexp(SS,'_')
             SS(idx) = ' ';            
-            P.Size = str2num(SS); 
+            P.BarWidths = str2num(SS); 
 %          case 'Shape'
 %            S = regexp(udp, ';Shape:','end')+1;
 %            E = sc(find(sc > S,1,'first'))-1;            
 %            P.Shape = udp(S:E);
-          case 'Angle'
-            S = regexp(udp, ';Angle:','end')+1;
+          case 'NAngles'
+            S = regexp(udp, ';NAngles:','end')+1;
             E = sc(find(sc > S,1,'first'))-1;   
             SS = udp(S:E)
             idx = regexp(SS,'_')
             SS(idx) = ' ';            
-            P.Angle = str2num(SS);
-          case 'Speed'
-            S = regexp(udp, ';Speed:','end')+1;
-            E = sc(find(sc > S,1,'first'))-1;            
-            P.Speed = str2num(udp(S:E));
-          case 'Order'
-            S = regexp(udp, ';Order:','end')+1;
-            E = sc(find(sc > S,1,'first'))-1;            
-            P.Order = udp(S:E); 
+            P.NAngles = str2num(SS);
+%          case 'Speed'
+%            S = regexp(udp, ';Speed:','end')+1;
+%            E = sc(find(sc > S,1,'first'))-1;            
+%            P.Speed = str2num(udp(S:E));
+%          case 'Order'
+%            S = regexp(udp, ';Order:','end')+1;
+%            E = sc(find(sc > S,1,'first'))-1;            
+%            P.Order = udp(S:E); 
           case 'Repeats'
             S = regexp(udp, ';Repeats:','end')+1;
             E = sc(find(sc > S,1,'first'))-1;            
@@ -431,22 +431,29 @@ function [VStim P] = ParseUDPVStim(udp);
             S = regexp(udp, ';PostTime:','end')+1;
             E = sc(find(sc > S,1,'first'))-1;            
             P.PostTime = str2num(udp(S:E));     
-          case 'StimTime'
-            S = regexp(udp, ';StimTime:','end')+1;
+          case 'TimeON'
+            S = regexp(udp, ';TimeON:','end')+1;
             E = sc(find(sc > S,1,'first'))-1;            
-            P.StimTime = str2num(udp(S:E)); 
-          case 'InterStimTime'
-            S = regexp(udp, ';InterStimTime:','end')+1;
+            P.TimeON = str2num(udp(S:E));
+          case 'TimeOFF'
+            S = regexp(udp, ';TimeOFF:','end')+1;
             E = sc(find(sc > S,1,'first'))-1;            
-            P.InterStimTime = str2num(udp(S:E)); 
-          case 'FrameRate'
-            S = regexp(udp, ';FrameRate:','end')+1;
+            P.TimeOFF = str2num(udp(S:E)); 
+%          case 'FrameRate'
+%            S = regexp(udp, ';FrameRate:','end')+1;
+%            E = sc(find(sc > S,1,'first'))-1;            
+%            P.FrameRate = str2num(udp(S:E));   
+          case 'ONColor'
+            S = regexp(udp, ';ONColor:','end')+1;
             E = sc(find(sc > S,1,'first'))-1;            
-            P.FrameRate = str2num(udp(S:E));   
-          case 'StimColor'
-            S = regexp(udp, ';StimColor:','end')+1;
-            E = sc(find(sc > S,1,'first'))-1;            
-            P.StimColor = str2num(udp(S:E));  
+            SS = udp(S:E)
+            idx = regexp(SS,'_')
+            SS(idx) = ' ';            
+            P.ONColor = str2num(SS);
+%          case 'ONColor'
+%            S = regexp(udp, ';ONColor:','end')+1;
+%            E = sc(find(sc > S,1,'first'))-1;            
+%            P.ONColor = str2num(udp(S:E));  
           case 'BgColour'
             S = regexp(udp, ';BgColour:','end')+1;
             E = sc(find(sc > S,1,'first'))-1;            
@@ -1327,6 +1334,319 @@ function [VStim P] = ParseUDPVStim(udp);
             idx = regexp(SS,'_')
             SS(idx) = ' ';            
             P.Speed = str2num(SS);           
+          case 'ISI'
+            S = regexp(udp, ';ISI:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.ISI = str2num(udp(S:E)); 
+          case 'Xpos'
+            S = regexp(udp, ';Xpos:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            SS = udp(S:E)
+            idx = regexp(SS,'_')
+            SS(idx) = ' ';            
+            P.Xpos = str2num(SS);
+          case 'Ypos'
+            S = regexp(udp, ';Ypos:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            SS = udp(S:E)
+            idx = regexp(SS,'_')
+            SS(idx) = ' ';            
+            P.Ypos = str2num(SS);
+          case 'BgColour'
+            S = regexp(udp, ';BgColour:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.BgColour = str2num(udp(S:E));
+          otherwise
+        end
+      end
+      
+      
+    case 'Expanding Receding Checkerboard'
+      VStim = Class;
+      P.Type = Type;
+      for i = 1:length(Parameters)      
+        Parameter = Parameters{i};        
+        switch Parameter
+          case 'Filename'
+	          S = regexp(udp, ';Filename:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.Filename = udp(S:E);                                    
+          case 'SmallSize'
+            S = regexp(udp, ';SmallSize:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            SS = udp(S:E)
+            idx = regexp(SS,'_')
+            SS(idx) = ' ';            
+            P.SmallSize = str2num(SS);
+          case 'BigSize'
+            S = regexp(udp, ';BigSize:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            SS = udp(S:E)
+            idx = regexp(SS,'_')
+            SS(idx) = ' ';            
+            P.BigSize = str2num(SS);  
+          case 'Trial'
+            S = regexp(udp, ';Trial:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.Trial = str2num(udp(S:E));
+          case 'Speed'
+            S = regexp(udp, ';Speed:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            SS = udp(S:E)
+            idx = regexp(SS,'_')
+            SS(idx) = ' ';            
+            P.Speed = str2num(SS);           
+          case 'ISI'
+            S = regexp(udp, ';ISI:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.ISI = str2num(udp(S:E));                                 
+          case 'Xpos'
+            S = regexp(udp, ';Xpos:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            SS = udp(S:E)
+            idx = regexp(SS,'_')
+            SS(idx) = ' ';            
+            P.Xpos = str2num(SS);
+          case 'Ypos'
+            S = regexp(udp, ';Ypos:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            SS = udp(S:E)
+            idx = regexp(SS,'_')
+            SS(idx) = ' ';            
+            P.Ypos = str2num(SS);
+          case 'BgColour'
+            S = regexp(udp, ';BgColour:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.BgColour = str2num(udp(S:E));
+          otherwise
+        end
+      end
+    
+    case 'Collision Circle'
+      VStim = Class;
+      P.Type = Type;
+      for i = 1:length(Parameters)      
+        Parameter = Parameters{i};        
+        switch Parameter
+          case 'Filename'
+	          S = regexp(udp, ';Filename:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.Filename = udp(S:E);                                         
+          case 'Trial'
+            S = regexp(udp, ';Trial:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.Trial = str2num(udp(S:E));                
+          case 'ISI'
+            S = regexp(udp, ';ISI:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.ISI = str2num(udp(S:E));                                 
+          case 'StimLum'
+            S = regexp(udp, ';StimLum:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.StimLum = str2num(udp(S:E));           
+          case 'Xpos'
+            S = regexp(udp, ';Xpos:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            SS = udp(S:E)
+            idx = regexp(SS,'_')
+            SS(idx) = ' ';            
+            P.Xpos = str2num(SS);
+          case 'Ypos'
+            S = regexp(udp, ';Ypos:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            SS = udp(S:E)
+            idx = regexp(SS,'_')
+            SS(idx) = ' ';            
+            P.Ypos = str2num(SS);
+          case 'BgColour'
+            S = regexp(udp, ';BgColour:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.BgColour = str2num(udp(S:E));
+          otherwise
+        end
+      end
+      
+    case 'Collision Translating Circle'
+      VStim = Class;
+      P.Type = Type;
+      for i = 1:length(Parameters)      
+        Parameter = Parameters{i};        
+        switch Parameter
+          case 'Filename'
+	          S = regexp(udp, ';Filename:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.Filename = udp(S:E);                                         
+          case 'Trial'
+            S = regexp(udp, ';Trial:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.Trial = str2num(udp(S:E));                
+          case 'ISI'
+            S = regexp(udp, ';ISI:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.ISI = str2num(udp(S:E));                                 
+          case 'StimLum'
+            S = regexp(udp, ';StimLum:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.StimLum = str2num(udp(S:E));           
+          case 'Xpos'
+            S = regexp(udp, ';Xpos:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            SS = udp(S:E)
+            idx = regexp(SS,'_')
+            SS(idx) = ' ';            
+            P.Xpos = str2num(SS);
+          case 'Ypos'
+            S = regexp(udp, ';Ypos:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            SS = udp(S:E)
+            idx = regexp(SS,'_')
+            SS(idx) = ' ';            
+            P.Ypos = str2num(SS);
+          case 'BgColour'
+            S = regexp(udp, ';BgColour:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.BgColour = str2num(udp(S:E));
+          otherwise
+        end
+      end
+    
+    
+    case 'Collision Checkerboard'
+      VStim = Class;
+      P.Type = Type;
+      for i = 1:length(Parameters)      
+        Parameter = Parameters{i};        
+        switch Parameter
+          case 'Filename'
+	          S = regexp(udp, ';Filename:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.Filename = udp(S:E);                                         
+          case 'Trial'
+            S = regexp(udp, ';Trial:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.Trial = str2num(udp(S:E));                
+          case 'ISI'
+            S = regexp(udp, ';ISI:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.ISI = str2num(udp(S:E));                                         
+          case 'Xpos'
+            S = regexp(udp, ';Xpos:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            SS = udp(S:E)
+            idx = regexp(SS,'_')
+            SS(idx) = ' ';            
+            P.Xpos = str2num(SS);
+          case 'Ypos'
+            S = regexp(udp, ';Ypos:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            SS = udp(S:E)
+            idx = regexp(SS,'_')
+            SS(idx) = ' ';            
+            P.Ypos = str2num(SS);
+          case 'BgColour'
+            S = regexp(udp, ';BgColour:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.BgColour = str2num(udp(S:E));
+          otherwise
+        end
+      end
+      
+    case 'Collision Translating Checkerboard'
+      VStim = Class;
+      P.Type = Type;
+      for i = 1:length(Parameters)      
+        Parameter = Parameters{i};        
+        switch Parameter
+          case 'Filename'
+	          S = regexp(udp, ';Filename:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.Filename = udp(S:E);                                         
+          case 'Trial'
+            S = regexp(udp, ';Trial:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.Trial = str2num(udp(S:E));                
+          case 'ISI'
+            S = regexp(udp, ';ISI:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.ISI = str2num(udp(S:E));                                         
+          case 'Xpos'
+            S = regexp(udp, ';Xpos:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            SS = udp(S:E)
+            idx = regexp(SS,'_')
+            SS(idx) = ' ';            
+            P.Xpos = str2num(SS);
+          case 'Ypos'
+            S = regexp(udp, ';Ypos:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            SS = udp(S:E)
+            idx = regexp(SS,'_')
+            SS(idx) = ' ';            
+            P.Ypos = str2num(SS);
+          case 'BgColour'
+            S = regexp(udp, ';BgColour:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.BgColour = str2num(udp(S:E));
+          otherwise
+        end
+      end
+    
+  
+    case 'Dimming From Gray'
+      VStim = Class;
+      P.Type = Type;
+      for i = 1:length(Parameters)      
+        Parameter = Parameters{i};        
+        switch Parameter
+          case 'Filename'
+	          S = regexp(udp, ';Filename:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.Filename = udp(S:E);                                    
+          case 'Trial'
+            S = regexp(udp, ';Trial:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.Trial = str2num(udp(S:E));
+          case 'ISI'
+            S = regexp(udp, ';ISI:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.ISI = str2num(udp(S:E)); 
+          case 'Xpos'
+            S = regexp(udp, ';Xpos:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            SS = udp(S:E)
+            idx = regexp(SS,'_')
+            SS(idx) = ' ';            
+            P.Xpos = str2num(SS);
+          case 'Ypos'
+            S = regexp(udp, ';Ypos:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            SS = udp(S:E)
+            idx = regexp(SS,'_')
+            SS(idx) = ' ';            
+            P.Ypos = str2num(SS);
+          case 'BgColour'
+            S = regexp(udp, ';BgColour:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.BgColour = str2num(udp(S:E));
+          otherwise
+        end
+      end
+    
+    
+    case 'Brightening From Gray'
+      VStim = Class;
+      P.Type = Type;
+      for i = 1:length(Parameters)      
+        Parameter = Parameters{i};        
+        switch Parameter
+          case 'Filename'
+	          S = regexp(udp, ';Filename:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.Filename = udp(S:E);                                    
+          case 'Trial'
+            S = regexp(udp, ';Trial:','end')+1;
+            E = sc(find(sc > S,1,'first'))-1;            
+            P.Trial = str2num(udp(S:E));
           case 'ISI'
             S = regexp(udp, ';ISI:','end')+1;
             E = sc(find(sc > S,1,'first'))-1;            

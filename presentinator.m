@@ -49,9 +49,12 @@ oldEnableFlag = Screen('Preference', 'SuppressAllWarnings', 1);
   sparams.pixel2deg = 1/sparams.ydeg2pixel;
   %load gammaTable        
   global gt
-  gt = load('gammatable2_n17.mat');             
-  Screen('LoadNormalizedGammaTable', window, gt.gammaTable2*[1 1 1]);        
-        
+%  gt = load('gammatable2_n17.mat');    
+%  Screen('LoadNormalizedGammaTable', window, gt.gammaTable2*[1 1 1]);
+  gt = load('gammaTable1_n33.mat');        
+  Screen('LoadNormalizedGammaTable', window, gt.gammaTable1*[1 1 1]);
+
+  
   
 	%---------- KeyBoard Inputs ----------%
 	kc_q = KbName('q');	% Quit
@@ -298,7 +301,66 @@ clear('StimLog','vparams','filename')
       file_Stim = [file_date,'/BrighteningDimmingCircle']
       mkdir(file_Stim);
       
+    
+    case 'Expanding Receding Checkerboard'
       
+      StimLog = ShowExpandingRecedingCheckerboard(window,vparams,sparams);
+      file_date = ['/home/farrowlab/StimLog/StimLog',datestr(now,['yyyy','mm','dd'])];
+      mkdir(file_date);
+      file_Stim = [file_date,'/ExpandingRecedingCheckerboard']
+      mkdir(file_Stim);
+      
+      
+    case 'Collision Circle'
+      
+      StimLog = ShowCollisionCircle(window,vparams,sparams);
+      file_date = ['/home/farrowlab/StimLog/StimLog',datestr(now,['yyyy','mm','dd'])];
+      mkdir(file_date);
+      file_Stim = [file_date,'/CollisionCircle']
+      mkdir(file_Stim);
+    
+    case 'Collision Translating Circle'
+      
+      StimLog = ShowCollisionTranslatingCircle(window,vparams,sparams);
+      file_date = ['/home/farrowlab/StimLog/StimLog',datestr(now,['yyyy','mm','dd'])];
+      mkdir(file_date);
+      file_Stim = [file_date,'/CollisionTranslatingCircle']
+      mkdir(file_Stim);
+      
+    case 'Collision Checkerboard'
+      
+      StimLog = ShowCollisionCheckerboard(window,vparams,sparams);
+      file_date = ['/home/farrowlab/StimLog/StimLog',datestr(now,['yyyy','mm','dd'])];
+      mkdir(file_date);
+      file_Stim = [file_date,'/CollisionCheckerboard']
+      mkdir(file_Stim);
+    
+    case 'Collision Translating Checkerboard'
+      
+      StimLog = ShowCollisionTranslatingCheckerboard(window,vparams,sparams);
+      file_date = ['/home/farrowlab/StimLog/StimLog',datestr(now,['yyyy','mm','dd'])];
+      mkdir(file_date);
+      file_Stim = [file_date,'/CollisionTranslatingCheckerboard']
+      mkdir(file_Stim);
+    
+  
+    case 'Dimming From Gray'
+      
+      StimLog = ShowDimmingFromGray(window,vparams,sparams);
+      file_date = ['/home/farrowlab/StimLog/StimLog',datestr(now,['yyyy','mm','dd'])];
+      mkdir(file_date);
+      file_Stim = [file_date,'/DimmingFromGray']
+      mkdir(file_Stim);
+      
+   
+   case 'Brightening From Gray'
+      
+      StimLog = ShowBrighteningFromGray(window,vparams,sparams);
+      file_date = ['/home/farrowlab/StimLog/StimLog',datestr(now,['yyyy','mm','dd'])];
+      mkdir(file_date);
+      file_Stim = [file_date,'/BrighteningFromGray']
+    
+    
       
     otherwise
 	  if ~isempty(VStim)

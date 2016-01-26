@@ -49,7 +49,7 @@ global vals inputV
 
   
     if (nargin < 1) || isempty(numMeasures)
-        numMeasures = 9;
+        numMeasures = 33;
     end
 
     input(sprintf(['When black screen appears, point photometer, \n' ...

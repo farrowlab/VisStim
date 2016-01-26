@@ -49,7 +49,7 @@ global vals inputV gt
 
   
     if (nargin < 1) || isempty(numMeasures)
-        numMeasures = 2;
+        numMeasures = 33;
     end
 
     input(sprintf(['When black screen appears, point photometer, \n' ...
@@ -68,8 +68,9 @@ global vals inputV gt
         win = Screen('OpenWindow', screenid, 0);
         maxLevel = Screen('ColorRange', win);
         %load gammaTable        
-        gt = load('gammatable1_n9.mat')      % gammatable_line.mat  gammatable_YC                
-        Screen('LoadNormalizedGammaTable', win, gt.gammaTable1*[1 1 1]);        
+        gt = load('gammatable_n33_spline.mat')      % gammatable_line.mat  gammatable_YC                
+%        Screen('LoadNormalizedGammaTable', win, gt.gammaTable1*[1 1 1]); 
+        Screen('LoadNormalizedGammaTable', win, gt.secondFit*[1 1 1]);        
         
         % Load identity gamma table for calibration:
         %LoadIdentityClut(win);

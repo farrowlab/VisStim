@@ -16,7 +16,9 @@ yd2p = 1/sparams.ydeg2pixel;
 
 % size parameters
 xsizelist = (vparams.Size*xd2p);
-ysize = (sparams.screenWidth*3);
+ysizelist = (vparams.Size*yd2p);
+height = (sparams.screenWidth*3);
+
 
 % luminance parameters
 lum = vparams.StimLum;
@@ -107,17 +109,18 @@ for k = 1:trial
   for l = 1:size(xsizelist,2)
       
      xsize = xsizelist(l);
+     ysize = ysizelist(l);
 
      % Calculate translating path, default is the half length of diagonal axis
      diaglength = (sqrt((sparams.screenWidth)^2+(sparams.screenHeight)^2))/2;
      verticallength = sparams.screenHeight;
      horizontallength = sparams.screenWidth;
-     dxtranspath = diaglength + (xsize/2);
-     dytranspath = diaglength + (xsize/2);
-     vxtranspath = diaglength + (xsize/2);
-     vytranspath = diaglength + (xsize/2);
-     hxtranspath = diaglength + (xsize/2);
-     hytranspath = diaglength + (xsize/2);
+     dxtranspath = (diaglength + (xsize))/2;
+     dytranspath = (diaglength + (ysize))/2;
+     vxtranspath = (verticallength + (xsize))/2;
+     vytranspath = (verticallength + (ysize))/2;
+     hxtranspath = (horizontallength + (xsize))/2;
+     hytranspath = (horizontallength + (ysize))/2;
      % Calculate number of frames (nframes)
      timeofstim = dytranspath*2/speed;  % if speed is 30 deg/s, time is 5.7352 s  
      nframes = (framerate*timeofstim);
@@ -130,29 +133,75 @@ for k = 1:trial
     
       % Generate position list
       if  (angle == 0) % Horizontal axis, backward translation (angle 0)       
+        if xCenter == xWindowCenter
         xCenterlist = linspace((xCenter-hxtranspath),(xCenter+hxtranspath),nframes);
         yCenterlist = yCenter*ones(1,nframes);
+        elseif xCenter > xWindowCenter
+        xCenterlist = linspace((xCenter-hxtranspath-abs(xCenter-xWindowCenter)),(xCenter+hxtranspath-abs(xCenter-xWindowCenter)),nframes);
+        yCenterlist = yCenter*ones(1,nframes);
+        elseif xCenter < xWindowCenter
+        xCenterlist = linspace((xCenter-hxtranspath+abs(xCenter-xWindowCenter)),(xCenter+hxtranspath+abs(xCenter-xWindowCenter)),nframes);
+        yCenterlist = yCenter*ones(1,nframes);
+        endif
       elseif (angle == 180) % Horizontal axis, forward translation (angle 180)
+        if xCenter == xWindowCenter
         xCenterlist = linspace((xCenter+hxtranspath),(xCenter-hxtranspath),nframes);
         yCenterlist = yCenter*ones(1,nframes);
+        elseif xCenter > xWindowCenter
+        xCenterlist = linspace((xCenter+hxtranspath-abs(xCenter-xWindowCenter)),(xCenter-hxtranspath-abs(xCenter-xWindowCenter)),nframes);
+        yCenterlist = yCenter*ones(1,nframes);
+        elseif xCenter < xWindowCenter
+        xCenterlist = linspace((xCenter+hxtranspath+abs(xCenter-xWindowCenter)),(xCenter-hxtranspath+abs(xCenter-xWindowCenter)),nframes);
+        yCenterlist = yCenter*ones(1,nframes);
+        endif
       elseif (angle == 270) % Vertical axis, downward translation (angle 270)
+        if (yCenter == yWindowCenter)
         xCenterlist = xCenter*ones(1,nframes);
         yCenterlist = linspace((yCenter-vytranspath),(yCenter+vytranspath),nframes);
+        elseif (yCenter > yWindowCenter)
+        xCenterlist = xCenter*ones(1,nframes);
+        yCenterlist = linspace((yCenter-vytranspath-abs(yCenter-yWindowCenter)),(yCenter+vytranspath-abs(yCenter-yWindowCenter)),nframes);
+        elseif (yCenter < yWindowCenter)
+        xCenterlist = xCenter*ones(1,nframes);
+        yCenterlist = linspace((yCenter-vytranspath+abs(yCenter-yWindowCenter)),(yCenter+vytranspath+abs(yCenter-yWindowCenter)),nframes);
+        endif    
       elseif (angle == 90) % Vertical axis, upward translation (angle 90)
+        if (yCenter == yWindowCenter)
         xCenterlist = xCenter*ones(1,nframes);
         yCenterlist = linspace((yCenter+vytranspath),(yCenter-vytranspath),nframes);
+        elseif (yCenter > yWindowCenter)
+        xCenterlist = xCenter*ones(1,nframes);
+        yCenterlist = linspace((yCenter+vytranspath-abs(yCenter-yWindowCenter)),(yCenter-vytranspath-abs(yCenter-yWindowCenter)),nframes);
+        elseif (yCenter < yWindowCenter)
+        xCenterlist = xCenter*ones(1,nframes);
+        yCenterlist = linspace((yCenter+vytranspath+abs(yCenter-yWindowCenter)),(yCenter-vytranspath+abs(yCenter-yWindowCenter)),nframes);
+        endif
       elseif  (angle == 315) % Diagonal axis, downbackward (angle 315)
-        xCenterlist = linspace((xCenter-(dxtranspath/sqrt(2))),(xCenter+(dxtranspath/sqrt(2))),nframes);
-        yCenterlist = linspace((yCenter-(dytranspath/sqrt(2))),(yCenter+(dytranspath/sqrt(2))),nframes);
+%        if (xCenter == xWindowCenter || yCenter == yWindowCenter)
+        xCenterlist = linspace((xCenter-hxtranspath),(xCenter+hxtranspath),nframes);
+        yCenterlist = linspace((yCenter-hytranspath),(yCenter+hytranspath),nframes);
+%        elseif (xCenter > xWindowCenter && yCenter == yWindowCenter)
+%        xCenterlist = linspace((xCenter-(dxtranspath/sqrt(2))-abs(xCenter-xWindowCenter)),(xCenter+(dxtranspath/sqrt(2))-abs(xCenter-xWindowCenter)),nframes);
+%        yCenterlist = linspace((yCenter-(dytranspath/sqrt(2))),(yCenter+(dytranspath/sqrt(2))),nframes);
+%        elseif (xCenter < xWindowCenter && yCenter == yWindowCenter)
+%        xCenterlist = linspace((xCenter-(dxtranspath/sqrt(2))+abs(xCenter-xWindowCenter)),(xCenter+(dxtranspath/sqrt(2))+abs(xCenter-xWindowCenter)),nframes);
+%        yCenterlist = linspace((yCenter-(dytranspath/sqrt(2))),(yCenter+(dytranspath/sqrt(2))),nframes);
+%        elseif (xCenter == xWindowCenter && yCenter > yWindowCenter)
+%        elseif (xCenter == xWindowCenter && yCenter < yWindowCenter)
+%        elseif (xCenter > xWindowCenter && yCenter < yWindowCenter)
+%        elseif (xCenter > xWindowCenter && yCenter > yWindowCenter)
+%        elseif (xCenter < xWindowCenter && yCenter < yWindowCenter)
+%        elseif (xCenter < xWindowCenter && yCenter > yWindowCenter)
+%        endif
       elseif  (angle == 135) % Diagonal axis, upforward (angle 135)
-        xCenterlist = linspace((xCenter+(dxtranspath/sqrt(2))),(xCenter-(dxtranspath/sqrt(2))),nframes);
-        yCenterlist = linspace((yCenter+(dytranspath/sqrt(2))),(yCenter-(dytranspath/sqrt(2))),nframes);
+        xCenterlist = linspace((xCenter+hxtranspath),(xCenter-hxtranspath),nframes);
+        yCenterlist = linspace((yCenter+hytranspath),(yCenter-hytranspath),nframes);
       elseif  (angle == 45) % Diagonal axis,  upbackward (angle 45)
-        xCenterlist = linspace((xCenter-(dxtranspath/sqrt(2))),(xCenter+(dxtranspath/sqrt(2))),nframes);
-        yCenterlist = linspace((yCenter+(dytranspath/sqrt(2))),(yCenter-(dytranspath/sqrt(2))),nframes);
+        xCenterlist = linspace((xCenter-hxtranspath),(xCenter+hxtranspath),nframes);
+        yCenterlist = linspace((yCenter+hytranspath),(yCenter-hytranspath),nframes);
       elseif  (angle == 225) % Diagonal axis, downforward (angle 225)
-        xCenterlist = linspace((xCenter+(dxtranspath/sqrt(2))),(xCenter-(dxtranspath/sqrt(2))),nframes);
-        yCenterlist = linspace((yCenter-(dytranspath/sqrt(2))),(yCenter+(dytranspath/sqrt(2))),nframes);
+        xCenterlist = linspace((xCenter+hxtranspath),(xCenter-hxtranspath),nframes);
+        yCenterlist = linspace((yCenter-hytranspath),(yCenter+hytranspath),nframes);
       endif
        
       % Send TTL pulse timestamp
@@ -163,15 +212,22 @@ for k = 1:trial
  
       for  i = 1:nframes    
         % Draw the rect to the screen
-        dstRect = [0 0 xsize ysize];
-        dstRect = CenterRectOnPointd(dstRect, xCenterlist(i), yCenterlist(i));
+%        dstRect = [0 0 xsize ysize];
+%        dstRect = CenterRectOnPointd(dstRect, xCenterlist(i), yCenterlist(i));
         % Rotation angle of bar
-        if  (angle == 0 || angle == 90 || angle == 180 || angle == 270)
+        if  (angle == 0  || angle == 180)
+        rotangle = angle;       
+        dstRect = [0 0 xsize height];
+        elseif  (angle == 90 || angle == 270)
         rotangle = angle;
+        dstRect = [0 0 ysize height];
         elseif  (angle == 45 || angle == 135 || angle == 225  || angle == 315) % Diagonal axis
         rotangle = angle + 90;
+        dstRect = [0 0 (xsize+ysize)/2 height];       
         endif
-      
+        
+        dstRect = CenterRectOnPointd(dstRect, xCenterlist(i), yCenterlist(i));
+        
         % Draw the checkerboard texture to the screen.
         Screen('DrawTexture', window, squareTexture, [], dstRect, rotangle, filterMode);
 

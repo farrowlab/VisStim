@@ -1,11 +1,10 @@
 function StimLog = ShowFlashingBar(window,vparams,sparams);
-
   %-----------------  Initiate TTLpulse  -----------------%
   InitiateTTLPulses
   vparams.Repeats = 1;
 
   %-----------------  Make Parameter List  ---------------%
-  [p, q] = meshgrid(vparams.Size,vparams.StimColor);
+  [p, q] = meshgrid(vparams.BarWidths,vparams.ONColor);
   StimList = [p(:) q(:)]; % Create a complete stimulus List where each row is a stimulus [Size, Colour]
   StimList = repmat(StimList,[vparams.Repeats,1]);
   NStim = size(StimList,1);  
@@ -23,9 +22,9 @@ function StimLog = ShowFlashingBar(window,vparams,sparams);
   StimLog.StimulusClass = 'Flashing Bar';   
    
   %-----------------  Initiate ---------------------------%
-  nangles = vparams.Angle;
+  nangles = vparams.NAngles;
   dangle = round(180/nangles);
-  vparams.Angle = 0:dangle:179;
+  vparams.NAngles = 0:dangle:179;
   
   %-----------------  Display Blank screen----------------%  
   StimLog.BlankTime(1) = GetSecs - StimLog.BeginTime;
@@ -35,7 +34,7 @@ function StimLog = ShowFlashingBar(window,vparams,sparams);
       Barwidth = StimList(1,1) * sparams.pixel2deg;
       MatStimList = [];
       for a = 1:nangles
-          AngleBar = vparams.Angle(a);          
+          AngleBar = vparams.NAngles(a);          
           if AngleBar == 0 || AngleBar==180
               PixelNumTraj = sparams.screenWidth; %- Barwidth; 
               posX = -Barwidth/2 + AngleBar/180*(sparams.screenWidth+Barwidth);
@@ -79,7 +78,7 @@ function StimLog = ShowFlashingBar(window,vparams,sparams);
 
   %-----------------  show bar for every row MatStimList  --%
   % need review (posisiton of bar)                  
-      StimLog.Size = StimList(1,1); % Size
+      StimLog.BarWidths = StimList(1,1); % BarWidths
       StimLog.BgColor = vparams.BgColour; % BgColour                
       for n=1:2*size(MatStimList,1)
           
@@ -126,7 +125,7 @@ function StimLog = ShowFlashingBar(window,vparams,sparams);
           TTLfunction(stimbit,recbit);
           
           % Log in
-          StimLog.Stim(n).Angle = AngleBar;
+          StimLog.Stim(n).NAngles = AngleBar;
           StimLog.Stim(n).Pos = MatStimList(i,1)+Barwidth/2;            
           StimLog.Stim(n).Color = StimList(c,2); % Color    
           StimLog.Stim(n).TimeON = GetSecs - StimLog.BeginTime;                                  
